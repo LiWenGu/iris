@@ -74,7 +74,7 @@
             </dependency>
             <dependency>
                 <groupId>com.leibangzhu</groupId>
-                <artifactId>coco</artifactId>
+                <artifactId>iris-coco</artifactId>
                 <version>${com.leibangzhu.coco.version}</version>
             </dependency>
             <dependency>

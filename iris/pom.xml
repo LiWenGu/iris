@@ -18,6 +18,7 @@
         <module>iris-spring-boot</module>
         <module>iris-bom</module>
         <module>iris-parent</module>
+        <module>iris-coco</module>
     </modules>
 
     <packaging>pom</packaging>

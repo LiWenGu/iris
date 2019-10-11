@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>coco</artifactId>
+            <artifactId>iris-coco</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
