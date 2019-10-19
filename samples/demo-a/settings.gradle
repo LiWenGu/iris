@@ -1,4 +1,0 @@
-rootProject.name = 'demo-a'
-include 'demo-a-api'
-include 'demo-a-service'
-

@@ -1,0 +1,2 @@
+racing=com.leibangzhu.perf.impl.RacingCar
+sport=com.leibangzhu.perf.impl.SportCar

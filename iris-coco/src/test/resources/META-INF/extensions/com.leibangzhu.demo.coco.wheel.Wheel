@@ -1,0 +1,2 @@
+rubber=com.leibangzhu.demo.coco.wheel.impl.RubberWheel
+wood=com.leibangzhu.demo.coco.wheel.impl.WoodWheel
