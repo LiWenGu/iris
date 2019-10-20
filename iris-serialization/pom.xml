@@ -8,13 +8,13 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-registry</artifactId>
+    <artifactId>iris-serialization</artifactId>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>iris-registry-api</module>
-        <module>iris-registry-etcd</module>
+        <module>iris-serialization-api</module>
+        <module>iris-serialization-protobuf</module>
     </modules>
 
 </project>

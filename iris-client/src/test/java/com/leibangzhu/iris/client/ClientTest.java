@@ -1,8 +1,8 @@
 package com.leibangzhu.iris.client;
 
 import com.leibangzhu.iris.core.IHelloService;
-import com.leibangzhu.iris.registry.EtcdRegistry;
 import com.leibangzhu.iris.registry.IRegistry;
+import com.leibangzhu.iris.registry.etcd.EtcdRegistry;
 import org.junit.Ignore;
 import org.junit.Test;
 

@@ -1,5 +1,7 @@
-package com.leibangzhu.iris.protocol;
+package com.leibangzhu.iris.remoting.netty;
 
+import com.leibangzhu.coco.ExtensionLoader;
+import com.leibangzhu.iris.serialization.Serialization;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -29,7 +31,7 @@ public class RpcDecoder extends ByteToMessageDecoder{
         byte[] data = new byte[dataLength];
         byteBuf.readBytes(data);
 
-        Object obj = SerializationUtil.deserialize(data, clazz);
+        Object obj = ExtensionLoader.getExtensionLoader(Serialization.class).getDefaultExtension().deserialize(data, clazz);
         //Object obj = JsonUtil.deserialize(data,genericClass); // Not use this, have some bugs
         list.add(obj);
     }

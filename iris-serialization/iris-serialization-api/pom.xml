@@ -3,18 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>iris-parent</artifactId>
         <groupId>com.leibangzhu</groupId>
+        <artifactId>iris-serialization</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-registry</artifactId>
+    <artifactId>iris-serialization-api</artifactId>
 
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>iris-registry-api</module>
-        <module>iris-registry-etcd</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-coco</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

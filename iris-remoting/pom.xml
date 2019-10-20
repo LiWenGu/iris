@@ -8,13 +8,13 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-registry</artifactId>
+    <artifactId>iris-remoting</artifactId>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>iris-registry-api</module>
-        <module>iris-registry-etcd</module>
+        <module>iris-remoting-api</module>
+        <module>iris-remoting-netty</module>
     </modules>
 
 </project>

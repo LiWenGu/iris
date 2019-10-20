@@ -13,8 +13,9 @@
         <!-- SPI 扩展微容器 -->
         <module>iris-coco</module>
         <module>iris-core</module>
-        <module>iris-protocol</module>
+        <module>iris-remoting</module>
         <module>iris-registry</module>
+        <module>iris-serialization</module>
         <module>iris-client</module>
         <module>iris-server</module>
         <module>iris-spring</module>

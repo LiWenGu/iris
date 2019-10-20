@@ -1,5 +1,6 @@
-package com.leibangzhu.iris.protocol;
+package com.leibangzhu.iris.serialization.protobuf;
 
+import com.leibangzhu.iris.serialization.Serialization;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
@@ -10,7 +11,7 @@ import org.objenesis.ObjenesisStd;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SerializationUtil {
+public class ProtobufSerialization<T> implements Serialization<T> {
 
     private static Map<Class<?>,Schema<?>> cacheSchemas = new ConcurrentHashMap<>();
     private static Objenesis objenesis = new ObjenesisStd(true);
@@ -27,7 +28,8 @@ public class SerializationUtil {
     /**
      * 序列化 ( Java对象 -> 字节数组)
      */
-    public static <T> byte[] serialize(T obj) {
+    @Override
+    public byte[] serialize(T obj) {
         Class<T> cls = (Class<T>) obj.getClass();
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {
@@ -43,7 +45,8 @@ public class SerializationUtil {
     /**
      * 反序列化 (字节数组 -> Java对象)
      */
-    public static <T> T deserialize(byte[] data, Class<T> cls) {
+    @Override
+    public T deserialize(byte[] data, Class<T> cls) {
         try {
             T message = (T) objenesis.newInstance(cls);
             Schema<T> schema = getSchema(cls);

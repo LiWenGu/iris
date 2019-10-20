@@ -151,11 +151,6 @@
             </dependency>
             <dependency>
                 <groupId>com.leibangzhu</groupId>
-                <artifactId>iris-protocol</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.leibangzhu</groupId>
                 <artifactId>iris-registry</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -177,6 +172,31 @@
             <dependency>
                 <groupId>com.leibangzhu</groupId>
                 <artifactId>iris-registry-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-registry-etcd</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-serialization-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-serialization-protobuf</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-remoting-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-remoting-netty</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

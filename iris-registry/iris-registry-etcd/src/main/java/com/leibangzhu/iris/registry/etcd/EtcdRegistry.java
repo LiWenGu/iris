@@ -6,7 +6,6 @@ import com.coreos.jetcd.Lease;
 import com.coreos.jetcd.Watch;
 import com.coreos.jetcd.data.ByteSequence;
 import com.coreos.jetcd.data.KeyValue;
-import com.coreos.jetcd.kv.DeleteResponse;
 import com.coreos.jetcd.kv.GetResponse;
 import com.coreos.jetcd.options.GetOption;
 import com.coreos.jetcd.options.PutOption;
@@ -14,10 +13,12 @@ import com.coreos.jetcd.options.WatchOption;
 import com.coreos.jetcd.watch.WatchEvent;
 import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.core.IpHelper;
+import com.leibangzhu.iris.core.NameThreadFactory;
 import com.leibangzhu.iris.registry.IEventCallback;
 import com.leibangzhu.iris.registry.IRegistry;
 import com.leibangzhu.iris.registry.RegistryEvent;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
+@Slf4j
 public class EtcdRegistry implements IRegistry {
 
     private final String rootPath = "iris";
@@ -69,12 +71,12 @@ public class EtcdRegistry implements IRegistry {
 
     // 发送心跳到ETCD,表明该host是活着的
     public void keepAlive() {
-        Executors.newSingleThreadExecutor().submit(
+        Executors.newSingleThreadExecutor(new NameThreadFactory("etcd-keepAlive")).submit(
                 () -> {
                     try {
                         Lease.KeepAliveListener listener = lease.keepAlive(leaseId);
                         listener.listen();
-                        System.out.println("KeepAlive lease:" + leaseId + "; Hex format:" + Long.toHexString(leaseId));
+                        log.info("KeepAlive lease:" + leaseId + "; Hex format:" + Long.toHexString(leaseId));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

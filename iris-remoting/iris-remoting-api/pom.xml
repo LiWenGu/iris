@@ -3,33 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>iris-parent</artifactId>
         <groupId>com.leibangzhu</groupId>
+        <artifactId>iris-remoting</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-client</artifactId>
+    <artifactId>iris-remoting-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-registry-etcd</artifactId>
+            <artifactId>iris-coco</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-remoting-netty</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <artifactId>iris-serialization-protobuf</artifactId>
         </dependency>
     </dependencies>
 

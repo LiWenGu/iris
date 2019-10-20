@@ -3,18 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>iris-parent</artifactId>
         <groupId>com.leibangzhu</groupId>
+        <artifactId>iris-serialization</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-protocol</artifactId>
+    <artifactId>iris-serialization-protobuf</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
@@ -26,6 +22,18 @@
         <dependency>
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-serialization-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

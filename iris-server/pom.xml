@@ -13,23 +13,15 @@
     <dependencies>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-protocol</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <artifactId>iris-remoting-netty</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-registry</artifactId>
+            <artifactId>iris-registry-etcd</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-core</artifactId>
         </dependency>
     </dependencies>
 

@@ -235,3 +235,7 @@ iris.loadbalance=roundrobin
 # 源码解析+改造
 
 ## 1. 基于 Dubbo 2.7.3 改造注册中心
+
+/iris/com.leibangzhu.IHelloService/consumers
+
+/iris/com.leibangzhu.IHelloService/configurators/127.0.0.1:2200

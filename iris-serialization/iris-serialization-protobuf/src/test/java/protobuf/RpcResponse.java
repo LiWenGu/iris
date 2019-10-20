@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.protocol;
+package protobuf;
 
 public class RpcResponse {
 

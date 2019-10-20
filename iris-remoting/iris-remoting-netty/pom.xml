@@ -3,39 +3,33 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>iris-parent</artifactId>
         <groupId>com.leibangzhu</groupId>
+        <artifactId>iris-remoting</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-spring</artifactId>
+    <artifactId>iris-remoting-netty</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-coco</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-core</artifactId>
+            <artifactId>iris-remoting-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-server</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.leibangzhu</groupId>
-                    <artifactId>iris-protocol</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>iris-serialization-protobuf</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 
