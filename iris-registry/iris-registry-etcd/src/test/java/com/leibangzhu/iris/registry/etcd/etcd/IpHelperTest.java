@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.registry.etcd;
+package com.leibangzhu.iris.registry.etcd.etcd;
 
 import com.leibangzhu.iris.core.IpHelper;
 import org.junit.Ignore;

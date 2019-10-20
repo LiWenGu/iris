@@ -16,6 +16,7 @@
         <protostuff.version>1.5.2</protostuff.version>
         <objenesis.version>2.6</objenesis.version>
         <com.leibangzhu.coco.version>0.0.1-SNAPSHOT</com.leibangzhu.coco.version>
+        <lombok.version>1.18.8</lombok.version>
         <spring.version>4.3.13.RELEASE</spring.version>
         <springboot.version>1.5.9.RELEASE</springboot.version>
         <revision>1.0-SNAPSHOT</revision>
@@ -94,6 +95,11 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>1.6.6</version>
             </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
 
             <!-- 用于测试 -->
             <dependency>
@@ -166,6 +172,11 @@
             <dependency>
                 <groupId>com.leibangzhu</groupId>
                 <artifactId>iris-spring</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-registry-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

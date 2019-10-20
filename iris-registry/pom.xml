@@ -9,24 +9,11 @@
     </parent>
 
     <artifactId>iris-registry</artifactId>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.coreos</groupId>
-            <artifactId>jetcd-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>iris-registry-api</module>
+        <module>iris-registry-etcd</module>
+    </modules>
 
 </project>

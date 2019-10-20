@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.registry.etcd;
+package com.leibangzhu.iris.registry.etcd.etcd;
 
 import com.coreos.jetcd.Client;
 import com.coreos.jetcd.Watch;

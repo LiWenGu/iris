@@ -232,4 +232,6 @@ iris.loadbalance=roundrobin
 
 ---
 
-# 源码解析
+# 源码解析+改造
+
+## 1. 基于 Dubbo 2.7.3 改造注册中心
