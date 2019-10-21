@@ -1,12 +1,14 @@
 package com.leibangzhu.iris.remoting.netty.client;
 
 import com.leibangzhu.coco.ExtensionLoader;
+import com.leibangzhu.iris.core.CollectionUtil;
 import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.core.IrisConfig;
 import com.leibangzhu.iris.core.loadbalance.ILoadBalance;
 import com.leibangzhu.iris.registry.IEventCallback;
 import com.leibangzhu.iris.registry.IRegistry;
 import com.leibangzhu.iris.registry.RegistryEvent;
+import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -23,15 +25,17 @@ public class ConnectManager implements IConnectManager,IEventCallback{
     private AtomicInteger roundRobin = new AtomicInteger(0);
     private Map<String,List<ChannelWrapper>> channelsByService = new LinkedHashMap<>();
 
-    public ConnectManager(IRegistry registry){
+    public ConnectManager(IRegistry registry, List<String> serivceNames) {
         this.registry = registry;
-        this.registry.watch(this);
+        for (String serivceName : serivceNames) {
+            this.registry.subscribe(serivceName, RegistryTypeEnum.providers, this);
+        }
     }
 
     public Channel getChannel(String serviceName) throws Exception {
         if (!channelsByService.containsKey(serviceName)){
-            List<Endpoint> endpoints = registry.find(serviceName);
-            List<ChannelWrapper> channels = new ArrayList<>();
+            List<Endpoint> endpoints = registry.find(serviceName, RegistryTypeEnum.providers);
+            List<ChannelWrapper> channels = new CollectionUtil.NoDuplicatesList<>();
             for (Endpoint endpoint : endpoints){
                 channels.add(connect(endpoint.getHost(),endpoint.getPort()));
             }
@@ -43,6 +47,7 @@ public class ConnectManager implements IConnectManager,IEventCallback{
         ILoadBalance loadBalance = ExtensionLoader.getExtensionLoader(ILoadBalance.class).getAdaptiveInstance();
         if ( 0 == size){
             System.out.println("NO available providers for service: " + serviceName);
+            throw new RuntimeException("没有可用的服务提供者！");
         }
         //int index = (roundRobin.getAndAdd(1) + size) % size;
         String loadbalance = IrisConfig.get("iris.loadbalance");
@@ -74,11 +79,13 @@ public class ConnectManager implements IConnectManager,IEventCallback{
 
             String s = event.getKeyValue().getKey();
             String serviceName = s.split("/")[2];             // com.leibangzhu.iris.bytebuddy.IHelloService
-            String endpointStr = s.split("/")[3];
+            String endpointStr = s.split("/")[4];
 
             String host = endpointStr.split(":")[0];          //  192.168.41.215
             int port = Integer.valueOf(endpointStr.split(":")[1]);    // 2017
-
+            if (channelsByService.isEmpty()) {
+                return;
+            }
             Iterator<ChannelWrapper> iterator = channelsByService.get(serviceName).iterator();
             while (iterator.hasNext()){
                 Endpoint endpoint = iterator.next().getEndpoint();
@@ -94,7 +101,7 @@ public class ConnectManager implements IConnectManager,IEventCallback{
 
             String s = event.getKeyValue().getKey();
             String serviceName = s.split("/")[2];             // com.leibangzhu.iris.bytebuddy.IHelloService
-            String endpointStr = s.split("/")[3];
+            String endpointStr = s.split("/")[4];
 
             String host = endpointStr.split(":")[0];          //  192.168.41.215
             int port = Integer.valueOf(endpointStr.split(":")[1]);    // 2017
@@ -127,6 +134,20 @@ public class ConnectManager implements IConnectManager,IEventCallback{
         @Override
         public String toString() {
             return endpoint.getHost() + ":" + endpoint.getPort();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ChannelWrapper that = (ChannelWrapper) o;
+            return Objects.equals(endpoint.getHost(), that.endpoint.getHost()) &&
+                    Objects.equals(endpoint.getPort(), that.getEndpoint().getPort());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(endpoint.getHost(), endpoint.getPort());
         }
     }
 }

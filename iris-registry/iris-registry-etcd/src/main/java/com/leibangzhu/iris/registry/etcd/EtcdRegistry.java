@@ -98,6 +98,52 @@ public class EtcdRegistry implements IRegistry {
     public void unRegistered(String serviceName) {
     }
 
+    @Override
+    public void subscribe(String serviceName, RegistryTypeEnum registryTypeEnum, IEventCallback iEventCallback) {
+        Watch.Watcher watcher = watch.watch(ByteSequence.fromString("/" + rootPath + "/" + serviceName + "/" + registryTypeEnum.getName()),
+                WatchOption.newBuilder().withPrefix(ByteSequence.fromString("/" + rootPath + serviceName + "/" + registryTypeEnum.getName())).build());
+
+        Executors.newSingleThreadExecutor().submit((Runnable) () -> {
+            while (true) {
+                try {
+                    for (WatchEvent event : watcher.listen().getEvents()) {
+                        System.out.println(event.getEventType());
+                        System.out.println(event.getKeyValue().getKey().toStringUtf8());
+                        System.out.println(event.getKeyValue().getValue().toStringUtf8());
+
+                        // /iris/com.leibangzhu.IHelloService/192.168.41.215:2000
+
+                        String s = event.getKeyValue().getKey().toStringUtf8();
+                        String endpoint = s.split("/")[4];
+
+                        String host = endpoint.split(":")[0];
+                        int port = Integer.valueOf(endpoint.split(":")[1]);
+
+                        //endpointsByService.get(serviceName).remove(new Endpoint(host, port));
+
+                        if (null != iEventCallback) {
+                            RegistryEvent registryEvent = RegistryEvent
+                                    .newBuilder()
+                                    .eventType(RegistryEvent.EventType.valueOf(event.getEventType().toString()))
+                                    .key(event.getKeyValue().getKey().toStringUtf8())
+                                    .value(event.getKeyValue().getValue().toStringUtf8())
+                                    .build();
+
+                            iEventCallback.execute(registryEvent);
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void unsubscribe(String serviceName, IEventCallback iEventCallback) throws Exception {
+
+    }
+
     public List<Endpoint> find(String serviceName) throws Exception {
 
         if (endpointsByService.containsKey(serviceName)) {

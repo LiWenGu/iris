@@ -20,6 +20,12 @@ public interface IRegistry {
     // 取消注册服务
     void unRegistered(String serviceName) throws Exception ;
 
+    // 注册服务
+    void subscribe(String serviceName, RegistryTypeEnum registryTypeEnum, IEventCallback iEventCallback);
+
+    // 取消注册服务
+    void unsubscribe(String serviceName, IEventCallback iEventCallback) throws Exception;
+
     // 找到服务
     List<Endpoint> find(String serviceName) throws Exception;
 
