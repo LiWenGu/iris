@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.client;
+package com.leibangzhu.iris.remoting.netty.client;
 
 import com.leibangzhu.coco.ExtensionLoader;
 import com.leibangzhu.iris.core.Endpoint;

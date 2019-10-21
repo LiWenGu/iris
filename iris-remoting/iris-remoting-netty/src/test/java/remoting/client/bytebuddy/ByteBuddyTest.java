@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.client.bytebuddy;
+package remoting.client.bytebuddy;
 
 import com.leibangzhu.iris.core.IHelloService;
 import net.bytebuddy.ByteBuddy;

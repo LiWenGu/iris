@@ -1,6 +1,6 @@
-package com.leibangzhu.iris.client;
+package com.leibangzhu.iris.remoting.netty.client;
 
-import com.leibangzhu.iris.protocol.RpcRequest;
+import com.leibangzhu.iris.remoting.RpcRequest;
 import io.netty.channel.Channel;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;

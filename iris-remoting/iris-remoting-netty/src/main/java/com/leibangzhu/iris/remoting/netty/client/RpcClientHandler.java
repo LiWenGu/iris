@@ -1,10 +1,10 @@
-package com.leibangzhu.iris.client;
+package com.leibangzhu.iris.remoting.netty.client;
 
-import com.leibangzhu.iris.protocol.RpcResponse;
+import com.leibangzhu.iris.remoting.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse>{
+public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcResponse response) throws Exception {

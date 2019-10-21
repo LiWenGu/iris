@@ -1,10 +1,12 @@
 package com.leibangzhu.iris.registry;
 
 
+import com.leibangzhu.coco.Extension;
 import com.leibangzhu.iris.core.Endpoint;
 
 import java.util.List;
 
+@Extension(defaultValue = "etcd")
 public interface IRegistry {
 
     // 注册服务

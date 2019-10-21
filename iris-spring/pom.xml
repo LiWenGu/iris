@@ -21,17 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-server</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.leibangzhu</groupId>
-                    <artifactId>iris-protocol</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-client</artifactId>
+            <artifactId>iris-remoting-netty</artifactId>
         </dependency>
         <dependency>
             <groupId>net.bytebuddy</groupId>

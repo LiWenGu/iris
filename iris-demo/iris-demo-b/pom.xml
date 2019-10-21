@@ -17,7 +17,7 @@
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-client</artifactId>
+            <artifactId>iris-remoting-netty</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>

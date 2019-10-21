@@ -1,10 +1,11 @@
-package com.leibangzhu.iris.server;
+package remoting;
 
 
 import com.leibangzhu.iris.core.HelloService;
 import com.leibangzhu.iris.core.IHelloService;
 import com.leibangzhu.iris.registry.IRegistry;
 import com.leibangzhu.iris.registry.etcd.EtcdRegistry;
+import com.leibangzhu.iris.remoting.netty.RpcServer;
 import org.junit.Ignore;
 import org.junit.Test;
 

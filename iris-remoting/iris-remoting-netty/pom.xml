@@ -20,8 +20,16 @@
             <artifactId>iris-remoting-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-registry-etcd</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>

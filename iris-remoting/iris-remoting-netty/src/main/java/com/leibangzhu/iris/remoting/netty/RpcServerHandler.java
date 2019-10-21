@@ -1,7 +1,7 @@
-package com.leibangzhu.iris.server;
+package com.leibangzhu.iris.remoting.netty;
 
-import com.leibangzhu.iris.protocol.RpcRequest;
-import com.leibangzhu.iris.protocol.RpcResponse;
+import com.leibangzhu.iris.remoting.RpcRequest;
+import com.leibangzhu.iris.remoting.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

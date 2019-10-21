@@ -16,8 +16,6 @@
         <module>iris-remoting</module>
         <module>iris-registry</module>
         <module>iris-serialization</module>
-        <module>iris-client</module>
-        <module>iris-server</module>
         <module>iris-spring</module>
         <module>iris-spring-boot</module>
     </modules>

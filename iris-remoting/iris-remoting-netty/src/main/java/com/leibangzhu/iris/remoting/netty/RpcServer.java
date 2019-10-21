@@ -1,5 +1,6 @@
-package com.leibangzhu.iris.server;
+package com.leibangzhu.iris.remoting.netty;
 
+import com.leibangzhu.iris.core.NameThreadFactory;
 import com.leibangzhu.iris.registry.IRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -39,7 +40,7 @@ public class RpcServer {
 
     public void run() throws Exception {
 
-        Executors.newSingleThreadExecutor().submit(() -> {
+        Executors.newSingleThreadExecutor(new NameThreadFactory("rpc-server")).submit(() -> {
             EventLoopGroup bossGroup = new NioEventLoopGroup();
             EventLoopGroup workerGroup = new NioEventLoopGroup();
 

@@ -29,11 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-server</artifactId>
+            <artifactId>iris-remoting-netty</artifactId>
         </dependency>
     </dependencies>
 

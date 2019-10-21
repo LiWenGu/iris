@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.client.bytebuddy;
+package remoting.client.bytebuddy;
 
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;

@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.client;
+package com.leibangzhu.iris.remoting.netty.client;
 
 import com.leibangzhu.iris.registry.IRegistry;
 import net.bytebuddy.ByteBuddy;
