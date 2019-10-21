@@ -8,9 +8,10 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-public class RpcDecoder extends ByteToMessageDecoder{
+public class NettyDecoder extends ByteToMessageDecoder {
     private Class<?> clazz;
-    public RpcDecoder(Class<?> clazz){
+
+    public NettyDecoder(Class<?> clazz) {
         this.clazz = clazz;
     }
 

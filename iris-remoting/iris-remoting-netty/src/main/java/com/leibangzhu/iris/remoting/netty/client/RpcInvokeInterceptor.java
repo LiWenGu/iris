@@ -17,6 +17,7 @@ public class RpcInvokeInterceptor {
         this.connectManager = connectManager;
     }
 
+    // 执行反射代理方法，实际会 rpc 请求
     @RuntimeType
     public Object intercept(@AllArguments Object[] args, @Origin Method method) throws Exception {
         String name = method.getDeclaringClass().getName();

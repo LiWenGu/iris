@@ -4,24 +4,20 @@
 
     <parent>
         <groupId>com.leibangzhu</groupId>
-        <artifactId>iris-remoting</artifactId>
+        <artifactId>iris-protocol</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-remoting-api</artifactId>
+    <artifactId>iris-protocol-netty</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-coco</artifactId>
+            <artifactId>iris-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-serialization-protobuf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-registry-etcd</artifactId>
+            <artifactId>iris-protocol-api</artifactId>
         </dependency>
     </dependencies>
 

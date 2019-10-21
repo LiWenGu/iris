@@ -199,6 +199,16 @@
                 <artifactId>iris-remoting-netty</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-protocol-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-protocol-netty</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
