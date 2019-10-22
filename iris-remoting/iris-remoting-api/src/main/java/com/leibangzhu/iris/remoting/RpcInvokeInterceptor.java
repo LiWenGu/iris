@@ -1,6 +1,5 @@
-package com.leibangzhu.iris.remoting.netty.client;
+package com.leibangzhu.iris.remoting;
 
-import com.leibangzhu.iris.remoting.RpcRequest;
 import io.netty.channel.Channel;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;
@@ -11,9 +10,9 @@ import java.util.UUID;
 
 public class RpcInvokeInterceptor {
 
-    private IConnectManager connectManager;
+    private ClientConnectManager connectManager;
 
-    public RpcInvokeInterceptor(IConnectManager connectManager){
+    public RpcInvokeInterceptor(ClientConnectManager connectManager) {
         this.connectManager = connectManager;
     }
 
@@ -32,10 +31,11 @@ public class RpcInvokeInterceptor {
         // get a connect from connect manager
         Channel channel = connectManager.getChannel(method.getDeclaringClass().getName());
         // send the rpc request via the connect
-
         RpcFuture future = new RpcFuture();
+        // 客户端开始请求服务器
         RpcRequestHolder.put(request.getRequestId(),future);
 
+        // 非阻塞
         channel.writeAndFlush(request);
 
         Object result = null;

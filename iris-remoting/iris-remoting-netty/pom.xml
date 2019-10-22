@@ -28,10 +28,6 @@
             <artifactId>netty-all</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.leibangzhu</groupId>
             <artifactId>iris-serialization-protobuf</artifactId>
         </dependency>

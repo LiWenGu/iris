@@ -239,3 +239,7 @@ iris.loadbalance=roundrobin
 /iris/com.leibangzhu.IHelloService/consumers
 
 /iris/com.leibangzhu.IHelloService/configurators/127.0.0.1:2200
+
+## 2. client -> server
+
+连接基于 serviceName 做单独一个 channel？

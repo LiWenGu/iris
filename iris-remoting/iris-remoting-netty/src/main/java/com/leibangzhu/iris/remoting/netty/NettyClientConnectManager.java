@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.remoting.netty.client;
+package com.leibangzhu.iris.remoting.netty;
 
 import com.leibangzhu.coco.ExtensionLoader;
 import com.leibangzhu.iris.core.CollectionUtil;
@@ -9,10 +9,10 @@ import com.leibangzhu.iris.registry.IEventCallback;
 import com.leibangzhu.iris.registry.IRegistry;
 import com.leibangzhu.iris.registry.RegistryEvent;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
+import com.leibangzhu.iris.remoting.ClientChannelWrapper;
+import com.leibangzhu.iris.remoting.ClientConnectManager;
 import com.leibangzhu.iris.remoting.RpcRequest;
 import com.leibangzhu.iris.remoting.RpcResponse;
-import com.leibangzhu.iris.remoting.netty.NettyDecoder;
-import com.leibangzhu.iris.remoting.netty.NettyEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -21,19 +21,26 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ConnectManager implements IConnectManager, IEventCallback {
+@Slf4j
+public class NettyClientConnectManager implements ClientConnectManager, IEventCallback {
 
     private IRegistry registry;
     private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(4);
     private AtomicInteger roundRobin = new AtomicInteger(0);
-    private Map<String, List<ChannelWrapper>> channelsByService = new LinkedHashMap<>();
+    private Map<String, List<ClientChannelWrapper>> channelsByService = new LinkedHashMap<>();
 
-    public ConnectManager(IRegistry registry, List<String> serivceNames) {
+    @Override
+    public void registry(IRegistry registry, List<String> serivceNames) {
         this.registry = registry;
+        // 连接前先订阅服务
         for (String serivceName : serivceNames) {
             this.registry.subscribe(serivceName, RegistryTypeEnum.providers, this);
         }
@@ -42,7 +49,7 @@ public class ConnectManager implements IConnectManager, IEventCallback {
     public Channel getChannel(String serviceName) throws Exception {
         if (!channelsByService.containsKey(serviceName)) {
             List<Endpoint> endpoints = registry.find(serviceName, RegistryTypeEnum.providers);
-            List<ChannelWrapper> channels = new CollectionUtil.NoDuplicatesList<>();
+            List<ClientChannelWrapper> channels = new CollectionUtil.NoDuplicatesList<>();
             for (Endpoint endpoint : endpoints) {
                 channels.add(connect(endpoint.getHost(), endpoint.getPort()));
             }
@@ -61,12 +68,12 @@ public class ConnectManager implements IConnectManager, IEventCallback {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("loadbalance", loadbalance);
         int index = loadBalance.select(map, size);
-        ChannelWrapper channelWrapper = channelsByService.get(serviceName).get(index);
-        System.out.println("Load balance:" + loadbalance + "; Selected endpoint: " + channelWrapper.toString());
+        ClientChannelWrapper channelWrapper = channelsByService.get(serviceName).get(index);
+        log.info("Load balance:" + loadbalance + "; Selected endpoint: " + channelWrapper.toString());
         return channelWrapper.getChannel();
     }
 
-    private ChannelWrapper connect(String host, int port) throws Exception {
+    private ClientChannelWrapper connect(String host, int port) throws Exception {
 
         Bootstrap b = new Bootstrap()
                 .group(eventLoopGroup)
@@ -78,12 +85,12 @@ public class ConnectManager implements IConnectManager, IEventCallback {
                                 .addLast(new NettyEncoder(RpcRequest.class))
                                 .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
                                 .addLast(new NettyDecoder(RpcResponse.class))
-                                .addLast(new RpcClientHandler());
+                                .addLast(new NettyClientHandler());
                     }
                 });
 
         Channel channel = b.connect(host, port).sync().channel();
-        ChannelWrapper channelWrapper = new ChannelWrapper(new Endpoint(host, port), channel);
+        ClientChannelWrapper channelWrapper = new ClientChannelWrapper(new Endpoint(host, port), channel);
         return channelWrapper;
     }
 
@@ -102,7 +109,7 @@ public class ConnectManager implements IConnectManager, IEventCallback {
             if (channelsByService.isEmpty()) {
                 return;
             }
-            Iterator<ChannelWrapper> iterator = channelsByService.get(serviceName).iterator();
+            Iterator<ClientChannelWrapper> iterator = channelsByService.get(serviceName).iterator();
             while (iterator.hasNext()) {
                 Endpoint endpoint = iterator.next().getEndpoint();
                 if (endpoint.getHost().equals(host) && (endpoint.getPort() == port)) {
@@ -127,43 +134,6 @@ public class ConnectManager implements IConnectManager, IEventCallback {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private static class ChannelWrapper {
-        private Endpoint endpoint;
-        private Channel channel;
-
-        public ChannelWrapper(Endpoint endpoint, Channel channel) {
-            this.endpoint = endpoint;
-            this.channel = channel;
-        }
-
-        public Endpoint getEndpoint() {
-            return endpoint;
-        }
-
-        public Channel getChannel() {
-            return channel;
-        }
-
-        @Override
-        public String toString() {
-            return endpoint.getHost() + ":" + endpoint.getPort();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ChannelWrapper that = (ChannelWrapper) o;
-            return Objects.equals(endpoint.getHost(), that.endpoint.getHost()) &&
-                    Objects.equals(endpoint.getPort(), that.getEndpoint().getPort());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(endpoint.getHost(), endpoint.getPort());
         }
     }
 }

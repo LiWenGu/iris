@@ -10,6 +10,8 @@ import com.leibangzhu.iris.remoting.netty.NettyServer;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+
 @Ignore
 public class ServerTest {
 
@@ -20,6 +22,6 @@ public class ServerTest {
         server.init(registry, 2017);
         server.export(IHelloService.class, new HelloService());
         server.run();
-        Thread.sleep(100 * 1000);
+        TimeUnit.MINUTES.sleep(10);
     }
 }

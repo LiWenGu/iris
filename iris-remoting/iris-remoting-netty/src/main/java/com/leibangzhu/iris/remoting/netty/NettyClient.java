@@ -1,9 +1,11 @@
-package com.leibangzhu.iris.remoting.netty.client;
+package com.leibangzhu.iris.remoting.netty;
 
 import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.registry.IRegistry;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.Client;
+import com.leibangzhu.iris.remoting.ClientConnectManager;
+import com.leibangzhu.iris.remoting.RpcInvokeInterceptor;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
 
@@ -13,9 +15,8 @@ import static net.bytebuddy.matcher.ElementMatchers.isDeclaredBy;
 
 public class NettyClient implements Client {
 
-    private IRegistry registry;
     private Map<String, Object> proxyByClass = new LinkedHashMap<>();
-    ConnectManager connectManager;
+    private ClientConnectManager connectManager;
     // 用于存储当前消费者订阅的服务提供者信息
     private Map<String, List<Endpoint>> map = new HashMap<>();
 
@@ -44,7 +45,6 @@ public class NettyClient implements Client {
 
     @Override
     public void init(IRegistry registry, List<String> serviceNames) {
-        this.registry = registry;
         // 启动时就检查服务提供者存不存在
         if (false) {
             for (String serivceName : serviceNames) {
@@ -59,7 +59,8 @@ public class NettyClient implements Client {
                 }
             }
         }
-        this.connectManager = new ConnectManager(registry, serviceNames);
+        this.connectManager = new NettyClientConnectManager();
+        connectManager.registry(registry, serviceNames);
         for (String serivceName : serviceNames) {
             map.put(serivceName, new ArrayList<>());
         }

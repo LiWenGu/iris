@@ -1,6 +1,4 @@
-package com.leibangzhu.iris.remoting.netty.client;
-
-import com.leibangzhu.iris.remoting.RpcResponse;
+package com.leibangzhu.iris.remoting;
 
 import java.util.concurrent.*;
 

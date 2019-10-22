@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.remoting.netty.client;
+package com.leibangzhu.iris.remoting;
 
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -4,8 +4,9 @@ import com.leibangzhu.iris.core.IHelloService;
 import com.leibangzhu.iris.registry.IRegistry;
 import com.leibangzhu.iris.registry.etcd.EtcdRegistry;
 import com.leibangzhu.iris.remoting.Client;
-import com.leibangzhu.iris.remoting.netty.client.ConnectManager;
-import com.leibangzhu.iris.remoting.netty.client.NettyClient;
+import com.leibangzhu.iris.remoting.ClientConnectManager;
+import com.leibangzhu.iris.remoting.netty.NettyClient;
+import com.leibangzhu.iris.remoting.netty.NettyClientConnectManager;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -66,7 +67,8 @@ public class ClientTest {
         List<String> serviceNames = new ArrayList<>();
         serviceNames.add("abc");
         serviceNames.add("abc2");
-        ConnectManager connectManager = new ConnectManager(registry, serviceNames);
+        ClientConnectManager connectManager = new NettyClientConnectManager();
+        connectManager.registry(registry, serviceNames);
         TimeUnit.MINUTES.sleep(3);
     }
 }
