@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.remoting.netty;
+package com.leibangzhu.iris.remoting.transporter.netty;
 
 import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.registry.IRegistry;

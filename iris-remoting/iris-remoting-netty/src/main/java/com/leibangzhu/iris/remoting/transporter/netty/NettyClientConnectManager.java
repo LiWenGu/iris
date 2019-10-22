@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.remoting.netty;
+package com.leibangzhu.iris.remoting.transporter.netty;
 
 import com.leibangzhu.coco.ExtensionLoader;
 import com.leibangzhu.iris.core.CollectionUtil;

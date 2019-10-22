@@ -1,25 +1,25 @@
 package remoting;
 
 import com.leibangzhu.coco.ExtensionLoader;
-import com.leibangzhu.iris.remoting.RpcResponse;
-import com.leibangzhu.iris.serialization.Serialization;
+import com.leibangzhu.iris.core.IHelloService;
+import com.leibangzhu.iris.remoting.Client;
+import com.leibangzhu.iris.remoting.Transporter;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TestApp {
 
     @Test
-    public void asd() {
-        Serialization serialization = ExtensionLoader.getExtensionLoader(Serialization.class).getDefaultExtension();
-        RpcResponse rpcResponse = new RpcResponse();
-        rpcResponse.setRequestId("1");
-        List<String> test = new ArrayList<>();
-        test.add("11");
-        rpcResponse.setResult(test);
-        byte[] www = serialization.serialize(rpcResponse);
-        RpcResponse z = (RpcResponse) serialization.deserialize(www, RpcResponse.class);
-        System.out.println(z);
+    public void asd() throws Exception {
+        Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
+        transporter.bind(null, 0);
+        TimeUnit.SECONDS.sleep(1);
+        Client client = transporter.connect(null);
+        IHelloService helloService = client.ref(IHelloService.class);
+        String s = helloService.hello("leo");
+        System.out.println("====" + s);
+        TimeUnit.MINUTES.sleep(1000);
+
     }
 }
