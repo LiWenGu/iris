@@ -243,3 +243,7 @@ iris.loadbalance=roundrobin
 ## 2. client -> server
 
 连接基于 serviceName 做单独一个 channel？
+
+拆分出 transpoter 层。  
+
+待 自定义协议 protocol 层
