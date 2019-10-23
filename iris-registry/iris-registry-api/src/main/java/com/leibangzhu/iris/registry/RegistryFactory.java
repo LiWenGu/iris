@@ -14,22 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.leibangzhu.iris.remoting.transporter.netty;
+package com.leibangzhu.iris.registry;
 
-import com.leibangzhu.iris.registry.Registry;
-import com.leibangzhu.iris.remoting.Client;
-import com.leibangzhu.iris.remoting.Server;
-import com.leibangzhu.iris.remoting.Transporter;
+import com.leibangzhu.coco.Extension;
 
-public class NettyTransporter implements Transporter {
+@Extension(defaultValue = "etcd")
+public interface RegistryFactory {
 
-    @Override
-    public Server bind(Registry registry, int port) throws Exception {
-        return new NettyServer();
-    }
+    Registry getRegistry(String url) throws Exception;
 
-    @Override
-    public Client connect(Registry registry) throws Exception {
-        return new NettyClient();
-    }
 }

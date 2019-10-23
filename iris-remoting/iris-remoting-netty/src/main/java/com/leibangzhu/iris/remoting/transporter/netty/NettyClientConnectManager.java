@@ -6,7 +6,7 @@ import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.core.IrisConfig;
 import com.leibangzhu.iris.core.loadbalance.ILoadBalance;
 import com.leibangzhu.iris.registry.IEventCallback;
-import com.leibangzhu.iris.registry.IRegistry;
+import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryEvent;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.ClientChannelWrapper;
@@ -32,13 +32,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class NettyClientConnectManager implements ClientConnectManager, IEventCallback {
 
-    private IRegistry registry;
+    private Registry registry;
     private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(4);
     private AtomicInteger roundRobin = new AtomicInteger(0);
     private Map<String, List<ClientChannelWrapper>> channelsByService = new LinkedHashMap<>();
 
     @Override
-    public void registry(IRegistry registry, List<String> serivceNames) {
+    public void registry(Registry registry, List<String> serivceNames) {
         this.registry = registry;
         // 连接前先订阅服务
         for (String serivceName : serivceNames) {

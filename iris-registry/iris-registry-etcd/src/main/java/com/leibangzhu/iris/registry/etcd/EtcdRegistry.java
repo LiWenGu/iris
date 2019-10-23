@@ -15,7 +15,7 @@ import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.core.IpHelper;
 import com.leibangzhu.iris.core.NameThreadFactory;
 import com.leibangzhu.iris.registry.IEventCallback;
-import com.leibangzhu.iris.registry.IRegistry;
+import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryEvent;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 
 @Slf4j
-public class EtcdRegistry implements IRegistry {
+public class EtcdRegistry implements Registry {
 
     private final String rootPath = "iris";
     private Lease lease;

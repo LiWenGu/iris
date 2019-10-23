@@ -1,7 +1,7 @@
 package com.leibangzhu.iris.remoting.transporter.netty;
 
 import com.leibangzhu.iris.core.Endpoint;
-import com.leibangzhu.iris.registry.IRegistry;
+import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.Client;
 import com.leibangzhu.iris.remoting.ClientConnectManager;
@@ -44,7 +44,7 @@ public class NettyClient implements Client {
     }
 
     @Override
-    public void init(IRegistry registry, List<String> serviceNames) {
+    public void init(Registry registry, List<String> serviceNames) {
         // 启动时就检查服务提供者存不存在
         if (false) {
             for (String serivceName : serviceNames) {

@@ -7,7 +7,7 @@ import com.leibangzhu.iris.core.Endpoint;
 import java.util.List;
 
 @Extension(defaultValue = "etcd")
-public interface IRegistry {
+public interface Registry {
 
     // 注册服务
     void register(String serviceName, int port, RegistryTypeEnum type) throws Exception;

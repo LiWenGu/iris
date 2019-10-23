@@ -1,7 +1,7 @@
 package com.leibangzhu.iris.remoting.transporter.netty;
 
 import com.leibangzhu.iris.core.NameThreadFactory;
-import com.leibangzhu.iris.registry.IRegistry;
+import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.RpcRequest;
 import com.leibangzhu.iris.remoting.RpcResponse;
@@ -23,13 +23,13 @@ import java.util.concurrent.Executors;
 public class NettyServer implements Server {
 
     private String host = "127.0.0.1";
-    private IRegistry registry;
+    private Registry registry;
     private int port = 2017;
 
     private Map<String, Object> handlerMap = new LinkedHashMap<>();
 
     @Override
-    public void init(IRegistry registry, int port) {
+    public void init(Registry registry, int port) {
         this.registry = registry;
         this.port = port;
     }

@@ -17,13 +17,13 @@
 package com.leibangzhu.iris.remoting;
 
 import com.leibangzhu.coco.Extension;
-import com.leibangzhu.iris.registry.IRegistry;
+import com.leibangzhu.iris.registry.Registry;
 
 @Extension(defaultValue = "netty")
 public interface Transporter {
 
-    Server bind(IRegistry registry, int port) throws Exception;
+    Server bind(Registry registry, int port) throws Exception;
 
-    Client connect(IRegistry registry) throws Exception;
+    Client connect(Registry registry) throws Exception;
 
 }

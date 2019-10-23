@@ -2,7 +2,7 @@ package com.leibangzhu.iris.springboot.config;
 
 import com.leibangzhu.iris.client.RpcClient;
 import com.leibangzhu.iris.registry.EtcdRegistry;
-import com.leibangzhu.iris.registry.IRegistry;
+import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.server.RpcServer;
 import com.leibangzhu.iris.spring.IrisApplicationListener;
 import com.leibangzhu.iris.spring.ReferenceAnnotationBeanPostProcessor;
@@ -21,14 +21,14 @@ import org.springframework.context.annotation.Configuration;
 public class IrisAutoConfiguration {
 
     @Bean
-    public IRegistry registry(RegistryProperties properties) throws Exception {
+    public Registry registry(RegistryProperties properties) throws Exception {
         EtcdRegistry registry = new EtcdRegistry(properties.getAddress());
         return registry;
     }
 
     @ConditionalOnProperty(prefix = "iris.server", value = "enable",havingValue = "true")
     @Bean
-    public RpcServer rpcServer(IRegistry registry, ServerProperties properties){
+    public RpcServer rpcServer(Registry registry, ServerProperties properties) {
         RpcServer server = new RpcServer(registry);
         server.port(properties.getPort());
         return server;
@@ -64,7 +64,7 @@ public class IrisAutoConfiguration {
 
     @ConditionalOnProperty(prefix = "iris.client", value = "enable",havingValue = "true")
     @Bean
-    public RpcClient client(IRegistry registry){
+    public RpcClient client(Registry registry) {
         RpcClient client = new RpcClient(registry);
         return client;
     }
