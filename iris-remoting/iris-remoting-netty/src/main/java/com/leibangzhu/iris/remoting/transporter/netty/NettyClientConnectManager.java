@@ -5,7 +5,6 @@ import com.leibangzhu.iris.core.CollectionUtil;
 import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.core.IrisConfig;
 import com.leibangzhu.iris.core.loadbalance.ILoadBalance;
-import com.leibangzhu.iris.protocol.IrisCodec;
 import com.leibangzhu.iris.registry.IEventCallback;
 import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryEvent;
@@ -80,8 +79,8 @@ public class NettyClientConnectManager implements ClientConnectManager, IEventCa
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         socketChannel.pipeline()
-                                .addLast(new IrisCodec.InternalEncoder())
-                                .addLast(new IrisCodec.InternalDecoder())
+                                .addLast(new NettyCodec.InternalEncoder())
+                                .addLast(new NettyCodec.InternalDecoder())
                                 .addLast(new NettyClientHandler());
                     }
                 });

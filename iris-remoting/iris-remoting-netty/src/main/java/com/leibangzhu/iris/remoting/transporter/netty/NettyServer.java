@@ -1,7 +1,6 @@
 package com.leibangzhu.iris.remoting.transporter.netty;
 
 import com.leibangzhu.iris.core.NameThreadFactory;
-import com.leibangzhu.iris.protocol.IrisCodec;
 import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.Server;
@@ -54,8 +53,8 @@ public class NettyServer implements Server {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new IrisCodec.InternalDecoder())
-                                    .addLast(new IrisCodec.InternalEncoder())
+                                    .addLast(new NettyCodec.InternalDecoder())
+                                    .addLast(new NettyCodec.InternalEncoder())
                                     .addLast(new NettyServerHandler(handlerMap));
                         }
                     })

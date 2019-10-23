@@ -15,6 +15,10 @@
             <groupId>com.leibangzhu</groupId>
             <artifactId>iris-coco</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
