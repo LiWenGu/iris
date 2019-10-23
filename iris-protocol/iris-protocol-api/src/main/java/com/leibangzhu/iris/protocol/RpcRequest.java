@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.remoting;
+package com.leibangzhu.iris.protocol;
 
 public class RpcRequest {
 

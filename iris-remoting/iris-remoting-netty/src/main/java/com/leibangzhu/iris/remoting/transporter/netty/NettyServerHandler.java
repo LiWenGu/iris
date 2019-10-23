@@ -1,12 +1,13 @@
 package com.leibangzhu.iris.remoting.transporter.netty;
 
-import com.leibangzhu.iris.remoting.RpcRequest;
-import com.leibangzhu.iris.remoting.RpcResponse;
+import com.leibangzhu.iris.protocol.RpcRequest;
+import com.leibangzhu.iris.protocol.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+
 
 public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
@@ -37,5 +38,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcRequest> 
         Object result = method.invoke(handlerObj, parameters);
         response.setResult(result);
         channelHandlerContext.writeAndFlush(response);
+
+
     }
 }

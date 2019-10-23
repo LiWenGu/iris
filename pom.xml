@@ -9,7 +9,7 @@
 
     <modules>
         <module>iris-bom</module>
-        <module>iris-demo</module>
+
         <!-- SPI 扩展微容器 -->
         <module>iris-coco</module>
         <module>iris-core</module>
@@ -17,8 +17,9 @@
         <module>iris-protocol</module>
         <module>iris-registry</module>
         <module>iris-serialization</module>
+        <!--<module>iris-demo</module>
         <module>iris-spring</module>
-        <module>iris-spring-boot</module>
+        <module>iris-spring-boot</module>-->
     </modules>
 
     <properties>

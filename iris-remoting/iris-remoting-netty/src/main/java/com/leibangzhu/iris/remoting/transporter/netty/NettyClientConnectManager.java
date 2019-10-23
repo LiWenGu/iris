@@ -5,14 +5,13 @@ import com.leibangzhu.iris.core.CollectionUtil;
 import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.core.IrisConfig;
 import com.leibangzhu.iris.core.loadbalance.ILoadBalance;
+import com.leibangzhu.iris.protocol.IrisCodec;
 import com.leibangzhu.iris.registry.IEventCallback;
 import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryEvent;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.ClientChannelWrapper;
 import com.leibangzhu.iris.remoting.ClientConnectManager;
-import com.leibangzhu.iris.remoting.RpcRequest;
-import com.leibangzhu.iris.remoting.RpcResponse;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -20,7 +19,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
@@ -82,9 +80,8 @@ public class NettyClientConnectManager implements ClientConnectManager, IEventCa
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         socketChannel.pipeline()
-                                .addLast(new NettyEncoder(RpcRequest.class))
-                                .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
-                                .addLast(new NettyDecoder(RpcResponse.class))
+                                .addLast(new IrisCodec.InternalEncoder())
+                                .addLast(new IrisCodec.InternalDecoder())
                                 .addLast(new NettyClientHandler());
                     }
                 });

@@ -14,7 +14,7 @@
 
     <modules>
         <module>iris-protocol-api</module>
-        <module>iris-protocol-netty</module>
+        <module>iris-protocol-iris</module>
     </modules>
 
 </project>

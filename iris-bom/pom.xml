@@ -206,7 +206,7 @@
             </dependency>
             <dependency>
                 <groupId>com.leibangzhu</groupId>
-                <artifactId>iris-protocol-netty</artifactId>
+                <artifactId>iris-protocol-iris</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

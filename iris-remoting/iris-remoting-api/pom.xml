@@ -25,6 +25,10 @@
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-protocol-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.leibangzhu</groupId>
             <artifactId>iris-registry-etcd</artifactId>
         </dependency>
     </dependencies>

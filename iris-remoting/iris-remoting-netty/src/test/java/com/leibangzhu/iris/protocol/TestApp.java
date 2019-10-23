@@ -1,4 +1,4 @@
-package remoting;
+package com.leibangzhu.iris.protocol;
 
 import com.leibangzhu.coco.ExtensionLoader;
 import com.leibangzhu.iris.core.HelloService;

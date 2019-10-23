@@ -1,5 +1,7 @@
 package com.leibangzhu.iris.remoting;
 
+import com.leibangzhu.iris.protocol.RpcResponse;
+
 import java.util.concurrent.*;
 
 public class RpcFuture implements Future<Object>{

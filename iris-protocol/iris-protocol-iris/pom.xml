@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-protocol-netty</artifactId>
+    <artifactId>iris-protocol-iris</artifactId>
 
     <dependencies>
         <dependency>
@@ -18,6 +18,14 @@
         <dependency>
             <groupId>com.leibangzhu</groupId>
             <artifactId>iris-protocol-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-serialization-protobuf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
         </dependency>
     </dependencies>
 
