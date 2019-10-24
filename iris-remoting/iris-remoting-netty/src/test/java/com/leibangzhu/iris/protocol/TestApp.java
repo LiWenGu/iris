@@ -6,6 +6,7 @@ import com.leibangzhu.iris.core.IHelloService;
 import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryFactory;
 import com.leibangzhu.iris.remoting.Client;
+import com.leibangzhu.iris.remoting.IrisShutdownHook;
 import com.leibangzhu.iris.remoting.Server;
 import com.leibangzhu.iris.remoting.Transporter;
 import org.junit.Test;
@@ -17,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 public class TestApp {
 
     @Test
-    public void asd() throws Exception {
+    public void clientServer() throws Exception {
         Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
         RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
-        Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
 
+        Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
         Server server = transporter.bind(registry, 0);
         server.init(registry, 2017);
         server.export(IHelloService.class, new HelloService());
@@ -36,6 +37,19 @@ public class TestApp {
         String s = helloService.hello("leo");
         System.out.println("====" + s);
         TimeUnit.MINUTES.sleep(1000);
+    }
 
+    @Test
+    public void destroy() throws Exception {
+        IrisShutdownHook.getIrisShutdownHook().register();
+        Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
+        RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
+
+        Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
+        Server server = transporter.bind(registry, 0);
+        server.init(registry, 2017);
+        server.export(IHelloService.class, new HelloService());
+        server.run();
+        TimeUnit.SECONDS.sleep(100);
     }
 }

@@ -55,4 +55,9 @@ public class IrisProtocol implements Protocol {
                 + contentLength + ", content=" + Arrays.toString(content) + "]";
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 }
