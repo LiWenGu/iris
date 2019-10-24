@@ -1,6 +1,15 @@
 package com.leibangzhu.iris.protocol;
 
+import com.leibangzhu.coco.ExtensionLoader;
+import com.leibangzhu.iris.registry.Registry;
+import com.leibangzhu.iris.registry.RegistryFactory;
+import com.leibangzhu.iris.remoting.Client;
+import com.leibangzhu.iris.remoting.Server;
+import com.leibangzhu.iris.remoting.Transporter;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class IrisProtocol implements Protocol {
     /**
@@ -17,17 +26,6 @@ public class IrisProtocol implements Protocol {
      * 消息的内容
      */
     private byte[] content;
-
-    /**
-     * 用于初始化，SmartCarProtocol
-     *
-     * @param contentLength 协议里面，消息数据的长度
-     * @param content       协议里面，消息的数据
-     */
-    public IrisProtocol(int contentLength, byte[] content) {
-        this.contentLength = contentLength;
-        this.content = content;
-    }
 
     public int getHead_data() {
         return head_data;
@@ -57,7 +55,38 @@ public class IrisProtocol implements Protocol {
 
     @Override
     public void destroy() {
-
+        server.destory();
+        client.destroy();
     }
+
+    private Server server;
+
+    private Client client;
+
+    @Override
+    public void export(Class<?> clazz, Object handler) throws Exception {
+        Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
+        RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
+
+        Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
+        server = transporter.bind(registry, 0);
+        server.init(registry, 2017);
+        server.run();
+        server.export(clazz, handler);
+    }
+
+    @Override
+    public <T> T ref(Class<T> clazz) throws Exception {
+        Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
+        RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
+        Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
+        client = transporter.connect(registry);
+        List<String> serviceNames = new ArrayList<>();
+        serviceNames.add(clazz.getName());
+        client.init(registry, serviceNames);
+        T t = client.ref(clazz);
+        return t;
+    }
+
 
 }

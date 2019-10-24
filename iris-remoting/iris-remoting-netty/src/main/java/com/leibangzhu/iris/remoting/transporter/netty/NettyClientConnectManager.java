@@ -20,10 +20,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -40,6 +37,7 @@ public class NettyClientConnectManager implements ClientConnectManager, IEventCa
         // 连接前先订阅服务
         for (String serivceName : serivceNames) {
             this.registry.subscribe(serivceName, RegistryTypeEnum.providers, this);
+            this.registry.register(serivceName, RegistryTypeEnum.consumers);
         }
     }
 
@@ -68,6 +66,22 @@ public class NettyClientConnectManager implements ClientConnectManager, IEventCa
         ClientChannelWrapper channelWrapper = channelsByService.get(serviceName).get(index);
         log.info("Load balance:" + loadbalance + "; Selected endpoint: " + channelWrapper.toString());
         return channelWrapper.getChannel();
+    }
+
+    @Override
+    public List<Channel> getAllChannel() {
+        List<Channel> channels = new ArrayList<>();
+        for (List<ClientChannelWrapper> clientChannelWrappers : channelsByService.values()) {
+            for (ClientChannelWrapper clientChannelWrapper : clientChannelWrappers) {
+                channels.add(clientChannelWrapper.getChannel());
+            }
+        }
+        return channels;
+    }
+
+    @Override
+    public EventLoopGroup getEventLoopGroup() {
+        return eventLoopGroup;
     }
 
     private ClientChannelWrapper connect(String host, int port) throws Exception {

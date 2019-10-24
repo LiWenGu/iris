@@ -6,6 +6,7 @@ import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.Client;
 import com.leibangzhu.iris.remoting.ClientConnectManager;
 import com.leibangzhu.iris.remoting.RpcInvokeInterceptor;
+import io.netty.channel.Channel;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
 
@@ -41,6 +42,18 @@ public class NettyClient implements Client {
         }
 
         return (T) proxyByClass.get(clazz.getName());
+    }
+
+    @Override
+    public void destroy() {
+        for (Channel channel : connectManager.getAllChannel()) {
+            if (channel != null) {
+                channel.close();
+            }
+        }
+        if (connectManager.getEventLoopGroup() != null) {
+            connectManager.getEventLoopGroup().shutdownGracefully();
+        }
     }
 
     @Override

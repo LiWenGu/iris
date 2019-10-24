@@ -8,4 +8,6 @@ public interface Client {
     void init(Registry registry, List<String> serviceNames);
 
     <T> T ref(Class<T> clazz);
+
+    void destroy();
 }

@@ -21,10 +21,7 @@ import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 
 @Slf4j
@@ -37,8 +34,8 @@ public class EtcdRegistry implements Registry {
     private Watch watch;
     private long leaseId;
 
-    // 用于消费者找提供者们
-    private Map<String, List<Endpoint>> endpointsByService = new LinkedHashMap<>();
+    // 保存消费者注册的服务提供者
+    private List<String> registriesList = new LinkedList<>();
     // 用于消费者和提供者保存在注册中心的值
     private Map<String, List<Endpoint>> endpointsByService = new LinkedHashMap<>();
 
@@ -47,7 +44,7 @@ public class EtcdRegistry implements Registry {
         this.lease = client.getLeaseClient();
         this.kv = client.getKVClient();
         this.watch = client.getWatchClient();
-        this.leaseId = lease.grant(30).get().getID();
+        this.leaseId = lease.grant(300).get().getID();
     }
 
     // 向ETCD中注册服务
@@ -59,7 +56,25 @@ public class EtcdRegistry implements Registry {
         ByteSequence key = ByteSequence.fromString(strKey);
         ByteSequence val = ByteSequence.fromString(strVal);
         kv.put(key, val, PutOption.newBuilder().withLeaseId(leaseId).build()).get();
+        registriesList.add(strKey);
         System.out.println("Register a new service at:" + strKey);
+    }
+
+    @Override
+    public void register(String serviceName, RegistryTypeEnum type) {
+        // 服务注册的key为:    /iris/com.some.package.IHelloService/consumers/127.0.0.1:20070
+        try {
+            String strKey = MessageFormat.format("/{0}/{1}/{2}/{3}", rootPath, serviceName, type.getName(), IpHelper.getHostIp());
+            String strVal = "";
+            ByteSequence key = ByteSequence.fromString(strKey);
+            ByteSequence val = ByteSequence.fromString(strVal);
+            kv.put(key, val, PutOption.newBuilder().withLeaseId(leaseId).build()).get();
+            registriesList.add(strKey);
+            System.out.println("Register a new service at:" + strKey);
+        } catch (Exception e) {
+            log.error("注册服务失败");
+            throw new RuntimeException("注册服务失败");
+        }
     }
 
     // 发送心跳到ETCD,表明该host是活着的
@@ -80,6 +95,15 @@ public class EtcdRegistry implements Registry {
 
     @Override
     public void destroy() {
+        // 服务提供者去除
+        for (String strKey : registriesList) {
+            try {
+                kv.delete(ByteSequence.fromString(strKey)).get();
+            } catch (Exception e) {
+                log.error("停机失败");
+                break;
+            }
+        }
         if (watch != null) {
             watch.close();
         }
@@ -102,7 +126,6 @@ public class EtcdRegistry implements Registry {
     public void subscribe(String serviceName, RegistryTypeEnum registryTypeEnum, IEventCallback iEventCallback) {
         Watch.Watcher watcher = watch.watch(ByteSequence.fromString("/" + rootPath + "/" + serviceName + "/" + registryTypeEnum.getName()),
                 WatchOption.newBuilder().withPrefix(ByteSequence.fromString("/" + rootPath + serviceName + "/" + registryTypeEnum.getName())).build());
-
         Executors.newSingleThreadExecutor().submit((Runnable) () -> {
             while (true) {
                 try {

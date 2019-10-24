@@ -32,10 +32,6 @@
             <artifactId>iris-serialization-protobuf</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-protocol-iris</artifactId>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>

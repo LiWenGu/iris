@@ -18,9 +18,12 @@ package com.leibangzhu.iris.registry;
 
 import com.leibangzhu.coco.Extension;
 
+import java.util.List;
+
 @Extension(defaultValue = "etcd")
 public interface RegistryFactory {
 
     Registry getRegistry(String url) throws Exception;
 
+    List<Registry> getAllRegistry();
 }

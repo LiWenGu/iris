@@ -19,6 +19,10 @@ public class TestApp {
 
     @Test
     public void clientServer() throws Exception {
+
+        IrisShutdownHook.getIrisShutdownHook().register();
+
+
         Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
         RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
 
@@ -36,7 +40,6 @@ public class TestApp {
         IHelloService helloService = client.ref(IHelloService.class);
         String s = helloService.hello("leo");
         System.out.println("====" + s);
-        TimeUnit.MINUTES.sleep(1000);
     }
 
     @Test
@@ -48,8 +51,8 @@ public class TestApp {
         Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
         Server server = transporter.bind(registry, 0);
         server.init(registry, 2017);
-        server.export(IHelloService.class, new HelloService());
         server.run();
+        server.export(IHelloService.class, new HelloService());
         TimeUnit.SECONDS.sleep(100);
     }
 }

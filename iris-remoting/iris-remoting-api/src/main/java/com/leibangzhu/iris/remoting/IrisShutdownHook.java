@@ -3,6 +3,7 @@ package com.leibangzhu.iris.remoting;
 import com.leibangzhu.coco.ExtensionLoader;
 import com.leibangzhu.iris.protocol.Protocol;
 import com.leibangzhu.iris.registry.Registry;
+import com.leibangzhu.iris.registry.RegistryFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,7 +27,7 @@ public class IrisShutdownHook extends Thread {
 
     @Override
     public void run() {
-        log.info("Run shutdown hook now.");
+        log.info("开启优雅关机.");
         doDestroy();
     }
 
@@ -46,7 +47,9 @@ public class IrisShutdownHook extends Thread {
         if (!destroyed.compareAndSet(false, true)) {
             return;
         }
-        //destroyProtocols();
+        log.info("关闭协议层 client、server 的连接");
+        destroyProtocols();
+        log.info("删除注册中心的相关信息");
         destroyRegistry();
     }
 
@@ -66,12 +69,14 @@ public class IrisShutdownHook extends Thread {
     }
 
     private void destroyRegistry() {
-        ExtensionLoader<Registry> loader = ExtensionLoader.getExtensionLoader(Registry.class);
+        ExtensionLoader<RegistryFactory> loader = ExtensionLoader.getExtensionLoader(RegistryFactory.class);
         for (String registryName : loader.getSupportedExtensions()) {
             try {
-                Registry registry = loader.getExtension(registryName);
-                if (registry != null) {
-                    registry.destroy();
+                RegistryFactory registryFactory = loader.getExtension(registryName);
+                if (registryFactory != null) {
+                    for (Registry registry : registryFactory.getAllRegistry()) {
+                        registry.destroy();
+                    }
                 }
             } catch (Throwable t) {
                 log.warn(t.getMessage(), t);

@@ -5,10 +5,7 @@ import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.Server;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -19,11 +16,13 @@ import java.util.concurrent.Executors;
 
 public class NettyServer implements Server {
 
-    private String host = "127.0.0.1";
     private Registry registry;
     private int port = 2017;
-
     private Map<String, Object> handlerMap = new LinkedHashMap<>();
+    private Channel channel;
+    ServerBootstrap bootstrap;
+    EventLoopGroup bossGroup = new NioEventLoopGroup();
+    EventLoopGroup workerGroup = new NioEventLoopGroup();
 
     @Override
     public void init(Registry registry, int port) {
@@ -35,18 +34,22 @@ public class NettyServer implements Server {
     public void export(Class<?> clazz, Object handler) throws Exception {
 
         handlerMap.put(clazz.getName(), handler);
-//        registry.register(clazz.getName(),port);
         registry.keepAlive();
+        for (String className : handlerMap.keySet()) {
+            try {
+                registry.register(className, port, RegistryTypeEnum.providers);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void run() {
         registry.keepAlive();
         Executors.newSingleThreadExecutor(new NameThreadFactory("rpc-server")).submit(() -> {
-            EventLoopGroup bossGroup = new NioEventLoopGroup();
-            EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-            ServerBootstrap bootstrap = new ServerBootstrap()
+            bootstrap = new ServerBootstrap()
                     .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -60,27 +63,22 @@ public class NettyServer implements Server {
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = null;
-            try {
-                future = bootstrap.bind(port).sync();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            for (String className : handlerMap.keySet()) {
-                try {
-                    registry.register(className, port, RegistryTypeEnum.providers);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            try {
-                future.channel().closeFuture().sync();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            ChannelFuture channelFuture = bootstrap.bind(port);
+            channelFuture.syncUninterruptibly();
+            channel = channelFuture.channel();
         });
     }
+
+    @Override
+    public void destory() {
+        if (channel != null) {
+            channel.close();
+        }
+        if (bootstrap != null) {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
+        }
+    }
+
+
 }

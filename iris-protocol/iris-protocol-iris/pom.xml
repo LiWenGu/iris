@@ -24,8 +24,12 @@
             <artifactId>iris-serialization-protobuf</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-remoting-netty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 
