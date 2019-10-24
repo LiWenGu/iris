@@ -249,3 +249,5 @@ iris.loadbalance=roundrobin
 待 自定义协议 protocol 层
 
 优雅停机，dubbo 会销毁所有的 protocol 和 registry 信息。如果当前是 spring 环境，则将优雅停机交给 listener 处理
+
+完成优雅停机，但是现在 protocol 和 remoting 以及 codec 层耦合严重
