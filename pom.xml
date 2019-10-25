@@ -14,6 +14,7 @@
         <module>iris-coco</module>
         <module>iris-container</module>
         <module>iris-core</module>
+        <module>iris-monitor</module>
         <module>iris-remoting</module>
         <module>iris-protocol</module>
         <module>iris-registry</module>

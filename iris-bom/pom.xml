@@ -204,6 +204,11 @@
                 <artifactId>iris-container-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-monitor-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
