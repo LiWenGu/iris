@@ -255,3 +255,16 @@ iris.loadbalance=roundrobin
 支持优雅停机，不依赖Spring和Web容器。
 支持服务延迟暴露
 支持超时和重试配置
+
+dubbo 源码与分层对应
+
+config  config
+proxy proxy
+registry registry
+cluster cluster
+monitor monitor
+protocol rpc
+exchange/transport remoting
+serialize serialize
+
+支持 spring 容器

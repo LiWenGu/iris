@@ -156,16 +156,6 @@
             </dependency>
             <dependency>
                 <groupId>com.leibangzhu</groupId>
-                <artifactId>iris-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.leibangzhu</groupId>
-                <artifactId>iris-server</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.leibangzhu</groupId>
                 <artifactId>iris-spring</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -207,6 +197,11 @@
             <dependency>
                 <groupId>com.leibangzhu</groupId>
                 <artifactId>iris-protocol-iris</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-container-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

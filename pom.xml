@@ -12,6 +12,7 @@
 
         <!-- SPI 扩展微容器 -->
         <module>iris-coco</module>
+        <module>iris-container</module>
         <module>iris-core</module>
         <module>iris-remoting</module>
         <module>iris-protocol</module>

@@ -14,6 +14,10 @@ public class IrisConfig {
         // load from classpath:/iris.properties
         Properties properties = new Properties();
         InputStream in = IrisConfig.class.getClassLoader().getResourceAsStream("iris.properties");
+        if (in == null) {
+            System.out.println("没有 iris.properties 配置，全部按默认配置处理");
+            return;
+        }
         properties.load(in);
         for (Map.Entry<Object,Object> entry :  properties.entrySet()){
             configs.put((String) entry.getKey(),(String) entry.getValue());
