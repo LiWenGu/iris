@@ -32,7 +32,6 @@ public class NettyServer implements Server {
 
     @Override
     public void export(Class<?> clazz, Object handler) throws Exception {
-
         handlerMap.put(clazz.getName(), handler);
         registry.keepAlive();
         for (String className : handlerMap.keySet()) {

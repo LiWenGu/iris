@@ -251,3 +251,7 @@ iris.loadbalance=roundrobin
 优雅停机，dubbo 会销毁所有的 protocol 和 registry 信息。如果当前是 spring 环境，则将优雅停机交给 listener 处理
 
 完成优雅停机，但是现在 protocol 和 remoting 以及 codec 层耦合严重
+
+支持优雅停机，不依赖Spring和Web容器。
+支持服务延迟暴露
+支持超时和重试配置

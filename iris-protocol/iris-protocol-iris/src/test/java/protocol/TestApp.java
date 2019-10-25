@@ -7,6 +7,8 @@ import com.leibangzhu.iris.protocol.Protocol;
 import com.leibangzhu.iris.remoting.IrisShutdownHook;
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class TestApp {
 
     @Test
@@ -14,7 +16,10 @@ public class TestApp {
         IrisShutdownHook.getIrisShutdownHook().register();
         Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getDefaultExtension();
         protocol.export(IHelloService.class, new HelloService());
-        IHelloService iHelloService = protocol.ref(IHelloService.class);
-        System.out.println(iHelloService.hello("liwenguang"));
+        while (true) {
+            IHelloService iHelloService = protocol.ref(IHelloService.class);
+            System.out.println(iHelloService.hello("liwenguang"));
+            TimeUnit.SECONDS.sleep(1);
+        }
     }
 }

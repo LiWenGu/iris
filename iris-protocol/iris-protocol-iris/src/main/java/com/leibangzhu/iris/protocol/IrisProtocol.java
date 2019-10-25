@@ -1,16 +1,23 @@
 package com.leibangzhu.iris.protocol;
 
 import com.leibangzhu.coco.ExtensionLoader;
+import com.leibangzhu.iris.core.IrisConfig;
+import com.leibangzhu.iris.core.NameThreadFactory;
 import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryFactory;
 import com.leibangzhu.iris.remoting.Client;
 import com.leibangzhu.iris.remoting.Server;
 import com.leibangzhu.iris.remoting.Transporter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class IrisProtocol implements Protocol {
     /**
      * 消息的开头的信息标志
@@ -63,27 +70,52 @@ public class IrisProtocol implements Protocol {
 
     private Client client;
 
+    private static final ScheduledExecutorService DELAY_EXPORT_EXECUTOR = Executors.newSingleThreadScheduledExecutor(new NameThreadFactory("IrisServiceDelayExporter"));
+
     @Override
     public void export(Class<?> clazz, Object handler) throws Exception {
-        Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
-        RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
-
-        Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
-        server = transporter.bind(registry, 0);
-        server.init(registry, 2017);
-        server.run();
-        server.export(clazz, handler);
+        if (server == null) {
+            synchronized (this) {
+                if (server == null) {
+                    Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
+                    RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
+                    Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
+                    server = transporter.bind(registry, 0);
+                    server.init(registry, 2017);
+                    server.run();
+                }
+            }
+        }
+        // todo 延迟暴露。需要根据 class 来针对处理吗？
+        int delay = IrisConfig.get("iris.delay", -1);
+        if (delay != -1) {
+            DELAY_EXPORT_EXECUTOR.schedule(() -> {
+                try {
+                    server.export(clazz, handler);
+                } catch (Exception e) {
+                    log.error("延迟暴露失败" + e.getMessage());
+                }
+            }, delay, TimeUnit.MILLISECONDS);
+        } else {
+            server.export(clazz, handler);
+        }
     }
 
     @Override
     public <T> T ref(Class<T> clazz) throws Exception {
-        Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
-        RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
-        Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
-        client = transporter.connect(registry);
-        List<String> serviceNames = new ArrayList<>();
-        serviceNames.add(clazz.getName());
-        client.init(registry, serviceNames);
+        if (client == null) {
+            synchronized (this) {
+                if (client == null) {
+                    Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
+                    RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
+                    Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
+                    client = transporter.connect(registry);
+                    List<String> serviceNames = new ArrayList<>();
+                    serviceNames.add(clazz.getName());
+                    client.init(registry, serviceNames);
+                }
+            }
+        }
         T t = client.ref(clazz);
         return t;
     }

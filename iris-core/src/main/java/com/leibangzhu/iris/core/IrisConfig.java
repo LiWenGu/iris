@@ -34,4 +34,20 @@ public class IrisConfig {
         }
         return configs.get(key);
     }
+
+    public static String get(String key, String def) {
+        String value = get(key);
+        if (value == null || value.isEmpty()) {
+            value = def;
+        }
+        return value;
+    }
+
+    public static int get(String key, int def) {
+        String value = get(key);
+        if (value == null || value.isEmpty()) {
+            return def;
+        }
+        return Integer.parseInt(value);
+    }
 }

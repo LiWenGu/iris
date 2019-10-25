@@ -21,6 +21,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -42,22 +43,28 @@ public class NettyClientConnectManager implements ClientConnectManager, IEventCa
     }
 
     public Channel getChannel(String serviceName) throws Exception {
-        if (!channelsByService.containsKey(serviceName)) {
-            List<Endpoint> endpoints = registry.find(serviceName, RegistryTypeEnum.providers);
-            List<ClientChannelWrapper> channels = new CollectionUtil.NoDuplicatesList<>();
-            for (Endpoint endpoint : endpoints) {
-                channels.add(connect(endpoint.getHost(), endpoint.getPort()));
+        int size = 0;
+        // todo 如果没有可用的服务提供者需要重试策略
+        while (true) {
+            if (!channelsByService.containsKey(serviceName)) {
+                List<Endpoint> endpoints = registry.find(serviceName, RegistryTypeEnum.providers);
+                List<ClientChannelWrapper> channels = new CollectionUtil.NoDuplicatesList<>();
+                for (Endpoint endpoint : endpoints) {
+                    channels.add(connect(endpoint.getHost(), endpoint.getPort()));
+                }
+                channelsByService.put(serviceName, channels);
             }
-            channelsByService.put(serviceName, channels);
-        }
 
-        // select one channel from all available channels
-        int size = channelsByService.get(serviceName).size();
-        ILoadBalance loadBalance = ExtensionLoader.getExtensionLoader(ILoadBalance.class).getAdaptiveInstance();
-        if (0 == size) {
-            System.out.println("NO available providers for service: " + serviceName);
-            throw new RuntimeException("没有可用的服务提供者！");
+            // select one channel from all available channels
+            size = channelsByService.get(serviceName).size();
+            if (0 == size) {
+                System.out.println("没有可用的服务提供者: " + serviceName + "，睡3秒再试试");
+                TimeUnit.SECONDS.sleep(3);
+                continue;
+            }
+            break;
         }
+        ILoadBalance loadBalance = ExtensionLoader.getExtensionLoader(ILoadBalance.class).getAdaptiveInstance();
         //int index = (roundRobin.getAndAdd(1) + size) % size;
         String loadbalance = IrisConfig.get("iris.loadbalance");
         Map<String, String> map = new LinkedHashMap<>();
