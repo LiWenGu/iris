@@ -268,3 +268,8 @@ exchange/transport remoting
 serialize serialize
 
 支持 spring 容器
+
+## 3. 支持 monitor 监控系统
+
+展示当前服务依赖
+修改服务依赖，控制是否能访问等
