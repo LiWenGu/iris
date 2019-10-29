@@ -2,4 +2,4 @@
 .gradle
 *.iml
 **/target
-**/.DS_Stroe
+**/.DS_Store
