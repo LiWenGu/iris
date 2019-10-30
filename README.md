@@ -258,14 +258,14 @@ iris.loadbalance=roundrobin
 
 dubbo 源码与分层对应
 
-config  config
-proxy proxy
-registry registry
-cluster cluster
-monitor monitor
-protocol rpc
-exchange/transport remoting
-serialize serialize
+config  config  
+proxy proxy  
+registry registry  
+cluster cluster  
+monitor monitor  
+protocol rpc  
+exchange/transport remoting  
+serialize serialize  
 
 支持 spring 容器
 
