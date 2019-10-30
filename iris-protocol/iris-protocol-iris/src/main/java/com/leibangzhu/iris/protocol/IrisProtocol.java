@@ -8,16 +8,17 @@ import com.leibangzhu.iris.registry.RegistryFactory;
 import com.leibangzhu.iris.remoting.Client;
 import com.leibangzhu.iris.remoting.Server;
 import com.leibangzhu.iris.remoting.Transporter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
+@ToString
 public class IrisProtocol implements Protocol {
     /**
      * 消息的开头的信息标志
@@ -52,12 +53,6 @@ public class IrisProtocol implements Protocol {
 
     public void setContent(byte[] content) {
         this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "SmartCarProtocol [head_data=" + head_data + ", contentLength="
-                + contentLength + ", content=" + Arrays.toString(content) + "]";
     }
 
     @Override

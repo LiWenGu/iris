@@ -4,5 +4,5 @@ import com.leibangzhu.coco.Extension;
 
 @Extension
 public interface Filter {
-    Object invoke(Object o) throws Exception;
+    Object invoke(Class<?> clazz, Object handler) throws Exception;
 }

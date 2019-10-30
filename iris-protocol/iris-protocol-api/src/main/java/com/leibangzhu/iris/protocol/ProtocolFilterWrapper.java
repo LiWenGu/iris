@@ -15,24 +15,24 @@ public class ProtocolFilterWrapper implements Protocol {
         this.protocol = protocol;
     }
 
-    private static void buildFilterChain() throws Exception {
+    private static void buildFilterChain(Class<?> clazz, Object handler) throws Exception {
         ExtensionLoader<Filter> extensionLoader = ExtensionLoader.getExtensionLoader(Filter.class);
         Set<String> filtersNames = extensionLoader.getSupportedExtensions();
         for (String filtersName : filtersNames) {
             Filter filter = extensionLoader.getExtension(filtersName);
-            System.out.println(filter.invoke("builder~"));
+            filter.invoke(clazz, handler);
         }
     }
 
     @Override
     public void export(Class<?> clazz, Object handler) throws Exception {
-        buildFilterChain();
+        buildFilterChain(clazz, handler);
         protocol.export(clazz, handler);
     }
 
     @Override
     public <T> T ref(Class<T> clazz) throws Exception {
-        buildFilterChain();
+        buildFilterChain(clazz, null);
         return protocol.ref(clazz);
     }
 

@@ -11,7 +11,7 @@
     <properties>
         <etcd.version>0.0.1</etcd.version>
         <junit.version>4.12</junit.version>
-        <netty.version>4.1.42.Final</netty.version>
+        <netty.version>4.1.12.Final</netty.version>
         <byte-buddy.version>1.7.9</byte-buddy.version>
         <protostuff.version>1.5.2</protostuff.version>
         <objenesis.version>2.6</objenesis.version>

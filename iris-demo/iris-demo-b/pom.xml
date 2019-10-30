@@ -13,11 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-remoting-netty</artifactId>
+            <artifactId>iris-protocol-iris</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
