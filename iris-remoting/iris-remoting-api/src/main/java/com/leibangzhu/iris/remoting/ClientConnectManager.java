@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ClientConnectManager {
 
-    void registry(Registry registry, List<String> serivceNames);
+    void registry(Registry registry, String serivceName);
 
     Channel getChannel(String serviceName) throws Exception;
 

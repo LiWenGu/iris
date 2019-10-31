@@ -1,8 +1,6 @@
 package com.leibangzhu.iris.remoting.transporter.netty;
 
-import com.leibangzhu.iris.core.Endpoint;
 import com.leibangzhu.iris.registry.Registry;
-import com.leibangzhu.iris.registry.RegistryTypeEnum;
 import com.leibangzhu.iris.remoting.Client;
 import com.leibangzhu.iris.remoting.ClientConnectManager;
 import com.leibangzhu.iris.remoting.RpcInvokeInterceptor;
@@ -10,7 +8,8 @@ import io.netty.channel.Channel;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.MethodDelegation;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static net.bytebuddy.matcher.ElementMatchers.isDeclaredBy;
 
@@ -18,14 +17,12 @@ public class NettyClient implements Client {
 
     private Map<String, Object> proxyByClass = new LinkedHashMap<>();
     private ClientConnectManager connectManager;
-    // 用于存储当前消费者订阅的服务提供者信息
-    private Map<String, List<Endpoint>> map = new HashMap<>();
+    private Registry registry;
+
 
     @Override
     public <T> T ref(Class<T> clazz) {
-        if (map.get(clazz.getName()) == null) {
-            throw new RuntimeException("没有注册该接口" + clazz.getName() + "对应服务");
-        }
+        connectManager.registry(registry, clazz.getName());
         if (!proxyByClass.containsKey(clazz.getName())) {
             try {
                 T proxy = new ByteBuddy()
@@ -56,26 +53,9 @@ public class NettyClient implements Client {
         }
     }
 
-    @Override
-    public void init(Registry registry, List<String> serviceNames) {
-        // 启动时就检查服务提供者存不存在
-        if (false) {
-            for (String serivceName : serviceNames) {
-                List<Endpoint> list = null;
-                try {
-                    list = registry.find(serivceName, RegistryTypeEnum.providers);
-                } catch (Exception e) {
-                    throw new RuntimeException("寻找服务失败");
-                }
-                if (list.isEmpty()) {
-                    throw new RuntimeException("服务提供者不存在");
-                }
-            }
-        }
+    public NettyClient(Registry registry) {
         this.connectManager = new NettyClientConnectManager();
-        connectManager.registry(registry, serviceNames);
-        for (String serivceName : serviceNames) {
-            map.put(serivceName, new ArrayList<>());
-        }
+        this.registry = registry;
     }
+
 }

@@ -1,8 +1,6 @@
 package com.leibangzhu.iris.protocol;
 
 import com.leibangzhu.coco.ExtensionLoader;
-import com.leibangzhu.iris.core.HelloService;
-import com.leibangzhu.iris.core.IHelloService;
 import com.leibangzhu.iris.registry.Registry;
 import com.leibangzhu.iris.registry.RegistryFactory;
 import com.leibangzhu.iris.remoting.Client;
@@ -27,8 +25,7 @@ public class TestApp {
         RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
 
         Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
-        Server server = transporter.bind(registry, 0);
-        server.init(registry, 2017);
+        Server server = transporter.bind(registry, 2017);
         server.export(IHelloService.class, new HelloService());
         server.run();
         TimeUnit.SECONDS.sleep(1);
@@ -36,9 +33,8 @@ public class TestApp {
         Client client = transporter.connect(registry);
         List<String> serviceNames = new ArrayList<>();
         serviceNames.add(IHelloService.class.getName());
-        client.init(registry, serviceNames);
         IHelloService helloService = client.ref(IHelloService.class);
-        String s = helloService.hello("leo");
+        String s = helloService.sayHello("leo");
         System.out.println("====" + s);
     }
 
@@ -49,8 +45,7 @@ public class TestApp {
         RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
 
         Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
-        Server server = transporter.bind(registry, 0);
-        server.init(registry, 2017);
+        Server server = transporter.bind(registry, 2017);
         server.run();
         server.export(IHelloService.class, new HelloService());
         TimeUnit.SECONDS.sleep(100);

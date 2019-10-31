@@ -1,71 +1,36 @@
 package com.leibangzhu.iris.springboot.config;
 
-import com.leibangzhu.iris.client.RpcClient;
-import com.leibangzhu.iris.registry.EtcdRegistry;
-import com.leibangzhu.iris.registry.Registry;
-import com.leibangzhu.iris.server.RpcServer;
-import com.leibangzhu.iris.spring.IrisApplicationListener;
-import com.leibangzhu.iris.spring.ReferenceAnnotationBeanPostProcessor;
-import com.leibangzhu.iris.spring.ServiceAnnotationBeanPostProcessor;
-import com.leibangzhu.iris.springboot.ServiceAnnotationBeanFactoryPostProcessor;
+import com.leibangzhu.iris.core.IrisConfig;
+import com.leibangzhu.iris.protocol.Protocol;
+import com.leibangzhu.iris.protocol.ProtocolFactory;
+import com.leibangzhu.iris.springboot.properties.ProtocolProperties;
 import com.leibangzhu.iris.springboot.properties.RegistryProperties;
-import com.leibangzhu.iris.springboot.properties.ServerProperties;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import com.leibangzhu.iris.springboot.properties.ScanProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties({RegistryProperties.class,ServerProperties.class})
+@EnableConfigurationProperties({RegistryProperties.class, ProtocolProperties.class, ScanProperties.class})
 public class IrisAutoConfiguration {
 
-    @Bean
-    public Registry registry(RegistryProperties properties) throws Exception {
-        EtcdRegistry registry = new EtcdRegistry(properties.getAddress());
-        return registry;
-    }
+    @Autowired
+    private ProtocolProperties protocolProperties;
 
-    @ConditionalOnProperty(prefix = "iris.server", value = "enable",havingValue = "true")
-    @Bean
-    public RpcServer rpcServer(Registry registry, ServerProperties properties) {
-        RpcServer server = new RpcServer(registry);
-        server.port(properties.getPort());
-        return server;
-    }
+    @Autowired
+    private RegistryProperties registryProperties;
 
-    @ConditionalOnProperty(prefix = "iris.server", value = "enable",havingValue = "true")
-    @Bean
-    public static ServiceAnnotationBeanFactoryPostProcessor beanFactoryPostProcessor(@Value("${iris.annotation.package}") String packageName){
-        ServiceAnnotationBeanFactoryPostProcessor processor = new ServiceAnnotationBeanFactoryPostProcessor(packageName);
-        return processor;
-    }
+    @Autowired
+    private ScanProperties scanProperties;
 
-    @ConditionalOnProperty(prefix = "iris.server", value = "enable",havingValue = "true")
     @Bean
-    public ServiceAnnotationBeanPostProcessor serviceAnnotationBeanPostProcessor(){
-        ServiceAnnotationBeanPostProcessor processor = new ServiceAnnotationBeanPostProcessor();
-        return processor;
-    }
+    public Protocol protocol() {
+        IrisConfig.set("iris.protocol.port", protocolProperties.getPort());
+        IrisConfig.set("iris.registry.protocol", registryProperties.getProtocol());
+        IrisConfig.set("iris.registry.address", registryProperties.getAddress());
+        IrisConfig.set("iris.scan.basePackages", scanProperties.getBasePackages());
 
-    @ConditionalOnProperty(prefix = "iris.client", value = "enable",havingValue = "true")
-    @Bean
-    public ReferenceAnnotationBeanPostProcessor referenceAnnotationBeanPostProcessor(){
-        ReferenceAnnotationBeanPostProcessor processor = new ReferenceAnnotationBeanPostProcessor();
-        return processor;
-    }
-
-    @ConditionalOnProperty(prefix = "iris.server", value = "enable",havingValue = "true")
-    @Bean
-    public IrisApplicationListener applicationListener(){
-        IrisApplicationListener applicationListener = new IrisApplicationListener();
-        return applicationListener;
-    }
-
-    @ConditionalOnProperty(prefix = "iris.client", value = "enable",havingValue = "true")
-    @Bean
-    public RpcClient client(Registry registry) {
-        RpcClient client = new RpcClient(registry);
-        return client;
+        return ProtocolFactory.getProtocol();
     }
 }

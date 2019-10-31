@@ -33,13 +33,11 @@ public class NettyClientConnectManager implements ClientConnectManager, IEventCa
     private Map<String, List<ClientChannelWrapper>> channelsByService = new LinkedHashMap<>();
 
     @Override
-    public void registry(Registry registry, List<String> serivceNames) {
+    public void registry(Registry registry, String serivceName) {
         this.registry = registry;
-        // 连接前先订阅服务
-        for (String serivceName : serivceNames) {
-            this.registry.subscribe(serivceName, RegistryTypeEnum.providers, this);
-            this.registry.register(serivceName, RegistryTypeEnum.consumers);
-        }
+        // 订阅、注册服务
+        this.registry.subscribe(serivceName, RegistryTypeEnum.providers, this);
+        this.registry.register(serivceName, RegistryTypeEnum.consumers);
     }
 
     public Channel getChannel(String serviceName) throws Exception {

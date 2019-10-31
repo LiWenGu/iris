@@ -1,0 +1,9 @@
+iris:
+  registry:
+    address: http://127.0.0.1:2379
+    protocol: etcd
+  protocol:
+    port: 20880
+  scan:
+    # 服务扫描基准包
+    base-packages: com.leibangzhu.iris.springboot.server

@@ -17,15 +17,14 @@ import java.util.concurrent.Executors;
 public class NettyServer implements Server {
 
     private Registry registry;
-    private int port = 2017;
+    private int port;
     private Map<String, Object> handlerMap = new LinkedHashMap<>();
     private Channel channel;
     ServerBootstrap bootstrap;
     EventLoopGroup bossGroup = new NioEventLoopGroup();
     EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-    @Override
-    public void init(Registry registry, int port) {
+    public NettyServer(Registry registry, int port) {
         this.registry = registry;
         this.port = port;
     }

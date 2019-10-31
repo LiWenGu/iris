@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.core.annotation;
+package com.leibangzhu.iris.springboot.annotation;
 
 import java.lang.annotation.*;
 
@@ -7,5 +7,4 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Inherited
 public @interface Service {
-    Class<?> interfaceClass() default void.class;
 }

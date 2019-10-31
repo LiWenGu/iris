@@ -27,6 +27,16 @@ public class IrisConfig {
         // ...
     }
 
+    public static void set(String key, String value) {
+        configs.put(key, value);
+    }
+
+    public static void set(String key, int value) {
+        configs.put(key, String.valueOf(value));
+    }
+
+
+
     public static String get(String key){
         if (!initialized){
             try {

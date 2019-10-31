@@ -1,8 +1,6 @@
 package protocol;
 
 import com.leibangzhu.coco.ExtensionLoader;
-import com.leibangzhu.iris.core.HelloService;
-import com.leibangzhu.iris.core.IHelloService;
 import com.leibangzhu.iris.protocol.Protocol;
 import com.leibangzhu.iris.remoting.IrisShutdownHook;
 import org.junit.Test;
@@ -19,7 +17,7 @@ public class TestApp {
         protocol.export(IHelloService.class, new HelloService());
         while (true) {
             IHelloService iHelloService = protocol.ref(IHelloService.class);
-            System.out.println(iHelloService.hello("liwenguang"));
+            System.out.println(iHelloService.sayHello("liwenguang"));
             TimeUnit.SECONDS.sleep(1);
         }
     }

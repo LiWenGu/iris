@@ -25,11 +25,11 @@ public class NettyTransporter implements Transporter {
 
     @Override
     public Server bind(Registry registry, int port) throws Exception {
-        return new NettyServer();
+        return new NettyServer(registry, port);
     }
 
     @Override
     public Client connect(Registry registry) throws Exception {
-        return new NettyClient();
+        return new NettyClient(registry);
     }
 }

@@ -20,8 +20,7 @@
         <module>iris-registry</module>
         <module>iris-serialization</module>
         <module>iris-demo</module>
-        <module>iris-spring</module>
-        <!-- <module>iris-spring-boot</module>-->
+        <module>iris-spring-boot</module>
     </modules>
 
     <properties>

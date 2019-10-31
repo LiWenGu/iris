@@ -11,8 +11,6 @@ import com.leibangzhu.iris.remoting.Transporter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -73,10 +71,9 @@ public class IrisProtocol implements Protocol {
             synchronized (this) {
                 if (server == null) {
                     Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
-                    RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
-                    Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
-                    server = transporter.bind(registry, 0);
-                    server.init(registry, 2017);
+                    RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getExtension(IrisConfig.get("iris.registry.protocol"));
+                    Registry registry = registryFactory.getRegistry(IrisConfig.get("iris.registry.address"));
+                    server = transporter.bind(registry, IrisConfig.get("iris.protocol.port", 2019));
                     server.run();
                 }
             }
@@ -102,18 +99,14 @@ public class IrisProtocol implements Protocol {
             synchronized (this) {
                 if (client == null) {
                     Transporter transporter = ExtensionLoader.getExtensionLoader(Transporter.class).getDefaultExtension();
-                    RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getDefaultExtension();
-                    Registry registry = registryFactory.getRegistry("http://127.0.0.1:2379");
+                    RegistryFactory registryFactory = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getExtension(IrisConfig.get("iris.registry.protocol"));
+                    Registry registry = registryFactory.getRegistry(IrisConfig.get("iris.registry.address"));
                     client = transporter.connect(registry);
-                    List<String> serviceNames = new ArrayList<>();
-                    serviceNames.add(clazz.getName());
-                    client.init(registry, serviceNames);
                 }
             }
         }
         T t = client.ref(clazz);
         return t;
     }
-
 
 }

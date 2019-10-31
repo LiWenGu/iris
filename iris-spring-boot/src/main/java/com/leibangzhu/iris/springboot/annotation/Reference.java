@@ -1,4 +1,4 @@
-package com.leibangzhu.iris.core.annotation;
+package com.leibangzhu.iris.springboot.annotation;
 
 import java.lang.annotation.*;
 
@@ -6,5 +6,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Reference {
-    Class<?> interfaceClass();
 }
