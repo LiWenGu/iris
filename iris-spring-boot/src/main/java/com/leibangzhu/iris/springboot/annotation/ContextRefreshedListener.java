@@ -1,6 +1,7 @@
 package com.leibangzhu.iris.springboot.annotation;
 
 import com.leibangzhu.iris.protocol.Protocol;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * 扫描 Service，注入 Reference
  */
+@Slf4j
 @Configuration
 public class ContextRefreshedListener implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -28,7 +30,7 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
                 try {
                     protocol.export(handle.getClass().getInterfaces()[0], handle);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error(handle + "暴露 Service 失败");
                 }
             }
             String[] clients = event.getApplicationContext().getBeanDefinitionNames();
@@ -42,12 +44,12 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
                         try {
                             field.set(bean, protocol.ref(field.getType()));
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            log.error(bean + "注入 Reference 失败");
                         }
                     }
                 }
             }
-            System.err.println("=====ContextRefreshedEvent=====" + event.getSource().getClass().getName());
+            log.info("注解扫描注入完成");
         }
     }
 }

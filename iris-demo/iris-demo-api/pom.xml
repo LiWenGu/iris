@@ -3,18 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>iris-parent</artifactId>
+        <artifactId>iris-demo</artifactId>
         <groupId>com.leibangzhu</groupId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-demo</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>iris-demo-api</module>
-        <module>iris-demo-default</module>
-        <module>iris-demo-springboot</module>
-    </modules>
+    <artifactId>iris-demo-api</artifactId>
 
 </project>

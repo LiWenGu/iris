@@ -209,6 +209,18 @@
                 <artifactId>iris-monitor-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- demo -->
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-demo-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

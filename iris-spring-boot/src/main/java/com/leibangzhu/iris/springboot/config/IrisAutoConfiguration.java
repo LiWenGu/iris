@@ -9,10 +9,12 @@ import com.leibangzhu.iris.springboot.properties.ScanProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties({RegistryProperties.class, ProtocolProperties.class, ScanProperties.class})
+@ComponentScan(basePackages = {"com.leibangzhu.iris.springboot.annotation"})
 public class IrisAutoConfiguration {
 
     @Autowired
@@ -30,7 +32,7 @@ public class IrisAutoConfiguration {
         IrisConfig.set("iris.registry.protocol", registryProperties.getProtocol());
         IrisConfig.set("iris.registry.address", registryProperties.getAddress());
         IrisConfig.set("iris.scan.basePackages", scanProperties.getBasePackages());
-
         return ProtocolFactory.getProtocol();
     }
+
 }
