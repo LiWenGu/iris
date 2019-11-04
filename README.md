@@ -269,7 +269,23 @@ serialize serialize
 
 支持 spring 容器
 
-## 3. 支持 monitor 监控系统
+## 3. 支持 monitor 监控系统（这对分层要求较高，暂不做，先做集群容错和负载）
 
 展示当前服务依赖
 修改服务依赖，控制是否能访问等
+
+## 4. 集群容错和负载均衡
+
+五大容错：  
+Failover 失败自动重试其它服务器，用于读
+Failfast 失败立即报错，用于非幂等的写
+Failsafe 失败异常忽略，用于日志
+Failback 失败定时重发，用于消息通知
+Forking 并发调用多个服务器，一个成功就返回，用于实时性要求高的读操作
+
+四大负载：
+Random
+RoundRobin
+LeastActive
+ConsistentHash
+
