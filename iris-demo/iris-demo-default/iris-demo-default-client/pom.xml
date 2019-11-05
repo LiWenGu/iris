@@ -17,7 +17,7 @@
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-protocol-iris</artifactId>
+            <artifactId>iris-rpc-iris</artifactId>
         </dependency>
     </dependencies>
 

@@ -11,17 +11,18 @@
         <module>iris-bom</module>
 
         <!-- SPI 扩展微容器 -->
-        <module>iris-coco</module>
         <module>iris-container</module>
-        <module>iris-core</module>
+        <module>iris-config</module>
         <module>iris-registry</module>
         <module>iris-cluster</module>
         <module>iris-monitor</module>
+        <module>iris-rpc</module>
         <module>iris-remoting</module>
-        <module>iris-protocol</module>
         <module>iris-serialization</module>
         <module>iris-demo</module>
         <module>iris-spring-boot</module>
+        <module>iris-core</module>
+        <module>iris-coco</module>
     </modules>
 
     <properties>

@@ -4,11 +4,11 @@
 
     <parent>
         <groupId>com.leibangzhu</groupId>
-        <artifactId>iris-remoting</artifactId>
+        <artifactId>iris-rpc</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-remoting-api</artifactId>
+    <artifactId>iris-rpc-api</artifactId>
 
     <dependencies>
         <dependency>
@@ -16,8 +16,8 @@
             <artifactId>iris-coco</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -25,11 +25,7 @@
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-serialization-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-serialization-protobuf</artifactId>
+            <artifactId>iris-remoting-api</artifactId>
         </dependency>
     </dependencies>
 

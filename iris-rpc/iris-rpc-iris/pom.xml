@@ -4,32 +4,32 @@
 
     <parent>
         <groupId>com.leibangzhu</groupId>
-        <artifactId>iris-remoting</artifactId>
+        <artifactId>iris-rpc</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>iris-remoting-api</artifactId>
+    <artifactId>iris-rpc-iris</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-coco</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <artifactId>iris-core</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-serialization-api</artifactId>
+            <artifactId>iris-rpc-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
             <artifactId>iris-serialization-protobuf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.leibangzhu</groupId>
+            <artifactId>iris-remoting-netty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 

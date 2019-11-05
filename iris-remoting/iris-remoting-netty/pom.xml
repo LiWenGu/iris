@@ -21,14 +21,6 @@
         </dependency>
         <dependency>
             <groupId>com.leibangzhu</groupId>
-            <artifactId>iris-registry-etcd</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.leibangzhu</groupId>
             <artifactId>iris-serialization-protobuf</artifactId>
         </dependency>
         <dependency>

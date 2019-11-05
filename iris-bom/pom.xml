@@ -156,6 +156,11 @@
             </dependency>
             <dependency>
                 <groupId>com.leibangzhu</groupId>
+                <artifactId>iris-cluster</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.leibangzhu</groupId>
                 <artifactId>iris-registry</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -191,12 +196,12 @@
             </dependency>
             <dependency>
                 <groupId>com.leibangzhu</groupId>
-                <artifactId>iris-protocol-api</artifactId>
+                <artifactId>iris-rpc-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.leibangzhu</groupId>
-                <artifactId>iris-protocol-iris</artifactId>
+                <artifactId>iris-rpc-iris</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
