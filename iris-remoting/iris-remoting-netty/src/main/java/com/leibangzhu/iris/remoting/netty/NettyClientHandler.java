@@ -1,21 +1,52 @@
 package com.leibangzhu.iris.remoting.netty;
 
-import com.leibangzhu.iris.protocol.RpcResponse;
-import com.leibangzhu.iris.remoting.RpcFuture;
-import com.leibangzhu.iris.remoting.RpcRequestHolder;
+import com.leibangzhu.iris.remoting.URL;
+import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
-public class NettyClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
+@Slf4j
+public class NettyClientHandler extends ChannelDuplexHandler {
+
+    private final URL url;
+
+    private final com.leibangzhu.iris.remoting.ChannelHandler handler;
+
+    public NettyClientHandler(URL url, com.leibangzhu.iris.remoting.ChannelHandler handler) {
+        if (url == null) {
+            throw new IllegalArgumentException("url == null");
+        }
+        if (handler == null) {
+            throw new IllegalArgumentException("handler == null");
+        }
+        this.url = url;
+        this.handler = handler;
+    }
+
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcResponse response) throws Exception {
-        String requestId = response.getRequestId();
-        // 客户端读取服务器响应信息
-        RpcFuture future = RpcRequestHolder.get(requestId);
-        if(null != future){
-            RpcRequestHolder.remove(requestId);
-            future.done(response);
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        NettyChannel channel = NettyChannel.getOrAddChannel(ctx.channel(), url, handler);
+        try {
+            handler.connected(channel);
+        } finally {
+            NettyChannel.removeChannelIfDisconnected(ctx.channel());
+        }
+
+        if (log.isInfoEnabled()) {
+            log.info("The connection of " + channel.getLocalAddress() + " -> " + channel.getRemoteAddress() + " is established.");
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        NettyChannel channel = NettyChannel.getOrAddChannel(ctx.channel(), url, handler);
+        try {
+            handler.caught(channel, cause);
+        } finally {
+            NettyChannel.removeChannelIfDisconnected(ctx.channel());
+        }
+    }
+
 }

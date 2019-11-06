@@ -1,6 +1,7 @@
 package com.leibangzhu.iris.protocol;
 
 import com.leibangzhu.coco.ExtensionLoader;
+import com.leibangzhu.iris.remoting.Channel;
 import com.leibangzhu.iris.remoting.Codec;
 import com.leibangzhu.iris.serialization.Serialization;
 import io.netty.buffer.ByteBuf;
@@ -11,7 +12,7 @@ import java.util.List;
 public class IrisCodec implements Codec {
 
     @Override
-    public void encode(ChannelHandlerContext ctx, Object msg, ByteBuf out) {
+    public void encode(Channel channel, Object msg, ByteBuf out) {
         if (msg instanceof RpcRequest) {
             RpcRequest req = (RpcRequest) msg;
             Serialization serialization = ExtensionLoader.getExtensionLoader(Serialization.class).getDefaultExtension();

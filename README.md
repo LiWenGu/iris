@@ -289,3 +289,8 @@ RoundRobin
 LeastActive
 ConsistentHash
 
+### 5. 包依赖单向
+
+remoting: serialize、transport、exchange
+
+抽象

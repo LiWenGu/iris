@@ -1,7 +1,10 @@
 package com.leibangzhu.iris.remoting;
 
 public interface Client {
-    <T> T ref(Class<T> clazz);
 
-    void destroy();
+    void doOpen() throws Throwable;
+
+    void doConnect() throws Throwable;
+
+    Channel getChannel();
 }
