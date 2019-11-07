@@ -30,7 +30,7 @@ final class NettyChannel implements com.leibangzhu.iris.remoting.Channel {
 
     private final Channel channel;
 
-    private NettyChannel(Channel channel) {
+    private NettyChannel(Channel channel, URL url, ChannelHandler handler) {
         if (channel == null) {
             throw new IllegalArgumentException("netty channel == null;");
         }
@@ -72,11 +72,9 @@ final class NettyChannel implements com.leibangzhu.iris.remoting.Channel {
         return (InetSocketAddress) channel.remoteAddress();
     }
 
-    private NettyChannel(Channel channel, URL url, ChannelHandler handler) {
-        if (channel == null) {
-            throw new IllegalArgumentException("netty channel == null;");
-        }
-        this.channel = channel;
+    @Override
+    public URL getUrl() {
+        return null;
     }
 
     private static final ConcurrentMap<Channel, NettyChannel> CHANNEL_MAP = new ConcurrentHashMap<>();

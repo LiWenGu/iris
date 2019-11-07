@@ -5,7 +5,6 @@ import com.leibangzhu.iris.remoting.Channel;
 import com.leibangzhu.iris.remoting.Codec;
 import com.leibangzhu.iris.serialization.Serialization;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class IrisCodec implements Codec {
     public void encode(Channel channel, Object msg, ByteBuf out) {
         if (msg instanceof RpcRequest) {
             RpcRequest req = (RpcRequest) msg;
-            Serialization serialization = ExtensionLoader.getExtensionLoader(Serialization.class).getDefaultExtension();
+            Serialization serialization = CodecUtil.getSerialization(channel.getUrl());
             byte[] content = serialization.serialize(req);
             // 1.写入消息的开头的信息标志(int类型)
             out.writeInt(IrisProtocol.head_data);
@@ -39,7 +38,7 @@ public class IrisCodec implements Codec {
     }
 
     @Override
-    public void decode(ChannelHandlerContext ctx, ByteBuf input, List<Object> out) {
+    public void decode(Channel channel, ByteBuf input, List<Object> out) {
         if (input.readableBytes() < 4) {
             return;
         }
