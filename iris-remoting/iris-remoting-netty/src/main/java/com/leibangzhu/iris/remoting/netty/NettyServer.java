@@ -54,8 +54,8 @@ public class NettyServer implements Server {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
-                                    .addLast(new NettyCodec.InternalDecoder())
-                                    .addLast(new NettyCodec.InternalEncoder())
+                                    .addLast(new NettyCodecAdapter.InternalDecoder())
+                                    .addLast(new NettyCodecAdapter.InternalEncoder())
                                     .addLast(new NettyServerHandler(handlerMap));
                         }
                     })

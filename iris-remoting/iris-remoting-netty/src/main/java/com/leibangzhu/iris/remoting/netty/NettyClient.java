@@ -1,9 +1,6 @@
 package com.leibangzhu.iris.remoting.netty;
 
-import com.leibangzhu.iris.remoting.Client;
-import com.leibangzhu.iris.remoting.Constants;
-import com.leibangzhu.iris.remoting.RemotingException;
-import com.leibangzhu.iris.remoting.URL;
+import com.leibangzhu.iris.remoting.*;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
@@ -20,7 +17,7 @@ import java.net.InetSocketAddress;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class NettyClient implements Client {
+public class NettyClient implements Client, ChannelHandler {
 
     private Bootstrap bootstrap;
 
@@ -41,7 +38,7 @@ public class NettyClient implements Client {
 
     @Override
     public void doOpen() throws Throwable {
-        final NettyClientHandler nettyClientHandler = new NettyClientHandler(getUrl(), new ChannelHandler());
+        final NettyClientHandler nettyClientHandler = new NettyClientHandler(getUrl(), this);
         bootstrap = new Bootstrap();
         bootstrap.group(nioEventLoopGroup)
                 .option(ChannelOption.SO_KEEPALIVE, true)
@@ -55,10 +52,10 @@ public class NettyClient implements Client {
             @Override
             protected void initChannel(Channel ch) throws Exception {
                 int heartbeatInterval = url.getNumbers().getOrDefault(Constants.HEARTBEAT_KEY, Constants.DEFAULT_HEARTBEAT);
-                NettyCodec codec = new NettyCodec();
+                NettyCodecAdapter codec = new NettyCodecAdapter(CodecUtil.getCodec(url), url, NettyClient.this);
                 ch.pipeline()//.addLast("logging",new LoggingHandler(LogLevel.INFO))//for debug
-                        .addLast("decoder", adapter.getDecoder())
-                        .addLast("encoder", adapter.getEncoder())
+                        .addLast("decoder", codec.getDecoder())
+                        .addLast("encoder", codec.getEncoder())
                         .addLast("client-idle-handler", new IdleStateHandler(heartbeatInterval, 0, 0, MILLISECONDS))
                         .addLast("handler", nettyClientHandler);
                 String socksProxyHost = ConfigUtils.getProperty(SOCKS_PROXY_HOST);
@@ -131,31 +128,28 @@ public class NettyClient implements Client {
         return null;
     }
 
-    class ChannelHandler implements com.leibangzhu.iris.remoting.ChannelHandler {
+    @Override
+    public void connected(com.leibangzhu.iris.remoting.Channel channel) throws RemotingException {
 
-        @Override
-        public void connected(com.leibangzhu.iris.remoting.Channel channel) throws RemotingException {
+    }
 
-        }
+    @Override
+    public void disconnected(com.leibangzhu.iris.remoting.Channel channel) throws RemotingException {
 
-        @Override
-        public void disconnected(com.leibangzhu.iris.remoting.Channel channel) throws RemotingException {
+    }
 
-        }
+    @Override
+    public void sent(com.leibangzhu.iris.remoting.Channel channel, Object message) throws RemotingException {
 
-        @Override
-        public void sent(com.leibangzhu.iris.remoting.Channel channel, Object message) throws RemotingException {
+    }
 
-        }
+    @Override
+    public void received(com.leibangzhu.iris.remoting.Channel channel, Object message) throws RemotingException {
 
-        @Override
-        public void received(com.leibangzhu.iris.remoting.Channel channel, Object message) throws RemotingException {
+    }
 
-        }
+    @Override
+    public void caught(com.leibangzhu.iris.remoting.Channel channel, Throwable exception) throws RemotingException {
 
-        @Override
-        public void caught(com.leibangzhu.iris.remoting.Channel channel, Throwable exception) throws RemotingException {
-
-        }
     }
 }

@@ -41,4 +41,8 @@ public class URL implements Serializable {
     private volatile transient String parameter;
 
     private volatile transient String string;
+
+    public Map<String, Integer> getNumbers() {
+        return null;
+    }
 }
