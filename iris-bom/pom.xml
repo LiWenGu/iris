@@ -18,7 +18,7 @@
         <com.leibangzhu.coco.version>0.0.1-SNAPSHOT</com.leibangzhu.coco.version>
         <lombok.version>1.18.8</lombok.version>
         <spring.version>5.2.0.RELEASE</spring.version>
-        <springboot.version>2.2.0.RELEASE</springboot.version>
+        <springboot.version>2.5.12</springboot.version>
         <revision>1.0-SNAPSHOT</revision>
     </properties>
 
